@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAIS Framework v1.3.2 — Token Flow Animation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes glow-pulse {
+      0%, 100% { filter: drop-shadow(0 0 3px currentColor); opacity: 0.9; }
+      50% { filter: drop-shadow(0 0 8px currentColor); opacity: 1; }
+    }
+    .node-active { animation: glow-pulse 2.5s ease-in-out infinite; }
+  </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-4">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-4">
+      <h1 class="text-2xl font-bold text-white mb-1">PAIS Framework v1.3.2 — Token Flow Animation</h1>
+      <p class="text-gray-400 text-sm">Local-First Inference with Intelligent Cloud Overflow</p>
+    </div>
+
+    <!-- Scenario Buttons -->
+    <div class="flex flex-wrap justify-center gap-2 mb-4">
+      <div class="flex flex-wrap justify-center gap-2 items-center">
+        <span class="text-xs text-green-400 font-bold">LOCAL:</span>
+        <button onclick="runScenario('small')" class="scenario-btn px-3 py-1.5 rounded text-sm font-medium bg-gray-700 text-gray-300 hover:bg-gray-600 transition-all" data-scenario="small">7B Fast</button>
+        <button onclick="runScenario('medium')" class="scenario-btn px-3 py-1.5 rounded text-sm font-medium bg-gray-700 text-gray-300 hover:bg-gray-600 transition-all" data-scenario="medium">70B Interactive</button>
+        <button onclick="runScenario('large')" class="scenario-btn px-3 py-1.5 rounded text-sm font-medium bg-gray-700 text-gray-300 hover:bg-gray-600 transition-all" data-scenario="large">236B Max</button>
+        <button onclick="runScenario('batch')" class="scenario-btn px-3 py-1.5 rounded text-sm font-medium bg-gray-700 text-gray-300 hover:bg-gray-600 transition-all" data-scenario="batch">Batch</button>
+        <button onclick="runScenario('assistant')" class="scenario-btn px-3 py-1.5 rounded text-sm font-medium bg-gray-700 text-gray-300 hover:bg-gray-600 transition-all" data-scenario="assistant">OpenClaw</button>
+        <span class="text-xs text-purple-400 font-bold ml-4">CLOUD:</span>
+        <button onclick="runScenario('overflow')" class="scenario-btn px-3 py-1.5 rounded text-sm font-medium bg-gray-700 text-gray-300 hover:bg-gray-600 transition-all" data-scenario="overflow">405B+ Brev</button>
+        <button onclick="runScenario('gemini')" class="scenario-btn px-3 py-1.5 rounded text-sm font-medium bg-gray-700 text-gray-300 hover:bg-gray-600 transition-all" data-scenario="gemini">Gemini</button>
+        <button onclick="runScenario('reasoning')" class="scenario-btn px-3 py-1.5 rounded text-sm font-medium bg-gray-700 text-gray-300 hover:bg-gray-600 transition-all" data-scenario="reasoning">Claude API</button>
+      </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="bg-gray-800 rounded-lg p-3 mb-4 flex flex-wrap justify-between items-center gap-2">
+      <div class="text-sm">
+        <span class="text-gray-400">Status: </span>
+        <span id="status" class="text-green-400">Select a scenario to visualize token flow</span>
+      </div>
+      <div id="metrics" class="flex gap-4 text-sm hidden">
+        <div><span class="text-gray-400">Speed: </span><span id="speed" class="text-blue-400 font-mono">0 tok/s</span></div>
+        <div><span class="text-gray-400">Latency: </span><span id="latency" class="text-yellow-400 font-mono">0ms</span></div>
+        <div><span class="text-gray-400">Dest: </span><span id="dest" class="text-green-400">-</span></div>
+      </div>
+    </div>
+
+    <!-- SVG Diagram -->
+    <div class="bg-gray-800 rounded-lg p-4">
+      <svg id="diagram" viewBox="0 0 900 680" class="w-full h-auto">
+        <defs>
+          <!-- Gradients for regions -->
+          <linearGradient id="localGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#1a365d;stop-opacity:0.5" />
+            <stop offset="100%" style="stop-color:#1a365d;stop-opacity:0.2" />
+          </linearGradient>
+          <linearGradient id="cloudGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#44337a;stop-opacity:0.5" />
+            <stop offset="100%" style="stop-color:#44337a;stop-opacity:0.2" />
+          </linearGradient>
+          
+          <!-- Glow filters -->
+          <filter id="glow-soft" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="particle-glow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Background regions -->
+        <!-- Local Inference Region -->
+        <rect x="30" y="195" width="840" height="175" rx="12" fill="url(#localGradient)" stroke="#2563eb" stroke-width="1" stroke-opacity="0.4"/>
+        <text x="45" y="218" fill="#63b3ed" font-size="11" font-weight="bold">🏠 LOCAL INFERENCE LAYER (95% of requests)</text>
+        
+        <!-- Cloud Overflow Region - now includes Gateway above services -->
+        <rect x="30" y="395" width="840" height="180" rx="12" fill="url(#cloudGradient)" stroke="#7c3aed" stroke-width="1" stroke-opacity="0.4"/>
+        <text x="45" y="418" fill="#b794f4" font-size="11" font-weight="bold">☁️ CLOUD OVERFLOW (5% — Nemotron PII Filtered)</text>
+
+        <!-- Connection paths layer -->
+        <g id="connectionPaths" opacity="0.2" fill="none" stroke-width="1.5"></g>
+
+        <!-- Active flow paths layer -->
+        <g id="activeFlowPaths"></g>
+
+        <!-- Nodes -->
+        <g id="nodes">
+          <!-- Client -->
+          <g id="node-client" class="node" data-x="450" data-y="35">
+            <rect x="375" y="15" width="150" height="40" rx="8" fill="#2d3748" stroke="#4a5568" stroke-width="1.5"/>
+            <text x="450" y="40" text-anchor="middle" fill="white" font-size="12" font-weight="bold">👤 Client Request</text>
+          </g>
+          
+          <!-- Router -->
+          <g id="node-router" class="node" data-x="450" data-y="115">
+            <rect x="360" y="90" width="180" height="50" rx="8" fill="#2d3748" stroke="#2d6a4f" stroke-width="1.5"/>
+            <text x="450" y="112" text-anchor="middle" fill="white" font-size="12" font-weight="bold">🎯 Model Router</text>
+            <text x="450" y="129" text-anchor="middle" fill="#a0aec0" font-size="10">Mac mini M4 Pro | 48GB</text>
+          </g>
+
+          <!-- PII Filter -->
+          <g id="node-piiFilter" class="node" data-x="720" data-y="115">
+            <rect x="630" y="90" width="180" height="50" rx="8" fill="#2d3748" stroke="#ed1c24" stroke-width="1.5"/>
+            <text x="720" y="112" text-anchor="middle" fill="white" font-size="12" font-weight="bold">🛡️ Nemotron PII</text>
+            <text x="720" y="129" text-anchor="middle" fill="#a0aec0" font-size="10">Context-Aware Filter</text>
+          </g>
+
+          <!-- Mac Studio -->
+          <g id="node-macStudio" class="node" data-x="120" data-y="250">
+            <rect x="30" y="225" width="180" height="50" rx="8" fill="#2d3748" stroke="#1565c0" stroke-width="1.5"/>
+            <text x="120" y="247" text-anchor="middle" fill="white" font-size="12" font-weight="bold">🍎 Mac Studio M3 Ultra</text>
+            <text x="120" y="264" text-anchor="middle" fill="#a0aec0" font-size="10">256GB | 819 GB/s | 70B-236B</text>
+          </g>
+
+          <!-- DGX Spark -->
+          <g id="node-dgxSpark" class="node" data-x="300" data-y="250">
+            <rect x="220" y="225" width="160" height="50" rx="8" fill="#2d3748" stroke="#76b900" stroke-width="1.5"/>
+            <text x="300" y="247" text-anchor="middle" fill="white" font-size="12" font-weight="bold">🟢 DGX Spark ×2</text>
+            <text x="300" y="264" text-anchor="middle" fill="#a0aec0" font-size="10">256GB | Batch | Prefill</text>
+          </g>
+
+          <!-- RTX 4090 -->
+          <g id="node-rtx4090" class="node" data-x="480" data-y="250">
+            <rect x="395" y="225" width="170" height="50" rx="8" fill="#2d3748" stroke="#76b900" stroke-width="1.5"/>
+            <text x="480" y="247" text-anchor="middle" fill="white" font-size="12" font-weight="bold">🎮 RTX 4090</text>
+            <text x="480" y="264" text-anchor="middle" fill="#a0aec0" font-size="10">24GB | 1,008 GB/s | Fastest</text>
+          </g>
+
+          <!-- OpenClaw -->
+          <g id="node-openClaw" class="node" data-x="660" data-y="250">
+            <rect x="575" y="225" width="170" height="50" rx="8" fill="#2d3748" stroke="#ff6f00" stroke-width="1.5"/>
+            <text x="660" y="247" text-anchor="middle" fill="white" font-size="12" font-weight="bold">🤖 OpenClaw K6</text>
+            <text x="660" y="264" text-anchor="middle" fill="#a0aec0" font-size="10">64GB | 24/7 Assistant</text>
+          </g>
+
+          <!-- AI Max+ (Knowledge) -->
+          <g id="node-knowledge" class="node" data-x="120" data-y="330">
+            <rect x="30" y="305" width="180" height="50" rx="8" fill="#2d3748" stroke="#9c27b0" stroke-width="1.5"/>
+            <text x="120" y="327" text-anchor="middle" fill="white" font-size="12" font-weight="bold">🧠 Knowledge Layer</text>
+            <text x="120" y="344" text-anchor="middle" fill="#a0aec0" font-size="10">AI Max+ 128GB | Qdrant | Redis</text>
+          </g>
+
+          <!-- NAS Storage Layer -->
+          <g id="node-nas" class="node" data-x="820" data-y="330">
+            <rect x="755" y="290" width="130" height="90" rx="8" fill="#2d3748" stroke="#ec4899" stroke-width="1.5"/>
+            <text x="820" y="312" text-anchor="middle" fill="white" font-size="11" font-weight="bold">💾 Synology NAS</text>
+            <text x="820" y="328" text-anchor="middle" fill="#a0aec0" font-size="9">DS423 | 24TB SHR</text>
+            <text x="820" y="344" text-anchor="middle" fill="#f9a8d4" font-size="8">/models /qdrant /docker</text>
+            <text x="820" y="358" text-anchor="middle" fill="#f9a8d4" font-size="8">/backups /family /synthetic</text>
+            <text x="820" y="372" text-anchor="middle" fill="#f9a8d4" font-size="8">/openclaw /git</text>
+          </g>
+
+          <!-- Cloud Gateway - Centered above cloud services -->
+          <g id="node-cloudGateway" class="node" data-x="450" data-y="445">
+            <rect x="340" y="420" width="220" height="50" rx="8" fill="#2d3748" stroke="#6a1b9a" stroke-width="2"/>
+            <text x="450" y="442" text-anchor="middle" fill="white" font-size="12" font-weight="bold">☁️ Cloud Gateway (Proxy)</text>
+            <text x="450" y="459" text-anchor="middle" fill="#a0aec0" font-size="10">Traefik | Rate Limits | Logging</text>
+          </g>
+
+          <!-- Cloud Services Row - Spread evenly below Gateway -->
+          <!-- NVIDIA Brev -->
+          <g id="node-brev" class="node" data-x="150" data-y="530">
+            <rect x="50" y="505" width="200" height="50" rx="8" fill="#2d3748" stroke="#ce93d8" stroke-width="1.5"/>
+            <text x="150" y="527" text-anchor="middle" fill="white" font-size="12" font-weight="bold">🟢 NVIDIA Brev</text>
+            <text x="150" y="544" text-anchor="middle" fill="#a0aec0" font-size="10">405B+ Models | GPU Cloud</text>
+          </g>
+
+          <!-- Gemini -->
+          <g id="node-gemini" class="node" data-x="450" data-y="530">
+            <rect x="350" y="505" width="200" height="50" rx="8" fill="#2d3748" stroke="#ce93d8" stroke-width="1.5"/>
+            <text x="450" y="527" text-anchor="middle" fill="white" font-size="12" font-weight="bold">🔵 Gemini API</text>
+            <text x="450" y="544" text-anchor="middle" fill="#a0aec0" font-size="10">Fast | Cost-Effective</text>
+          </g>
+
+          <!-- Anthropic -->
+          <g id="node-anthropic" class="node" data-x="750" data-y="530">
+            <rect x="650" y="505" width="200" height="50" rx="8" fill="#2d3748" stroke="#ce93d8" stroke-width="1.5"/>
+            <text x="750" y="527" text-anchor="middle" fill="white" font-size="12" font-weight="bold">🟠 Claude API</text>
+            <text x="750" y="544" text-anchor="middle" fill="#a0aec0" font-size="10">Long Context | Reasoning</text>
+          </g>
+
+          <!-- Response -->
+          <g id="node-response" class="node" data-x="450" data-y="620">
+            <rect x="370" y="595" width="160" height="40" rx="8" fill="#2d3748" stroke="#2d6a4f" stroke-width="1.5"/>
+            <text x="450" y="620" text-anchor="middle" fill="white" font-size="12" font-weight="bold">✅ Response</text>
+          </g>
+        </g>
+
+        <!-- Static guide lines (very faint) -->
+        <g opacity="0.15" fill="none" stroke="#4a5568" stroke-width="1">
+          <!-- Client to Router -->
+          <line x1="450" y1="55" x2="450" y2="90"/>
+          <!-- Router to local nodes -->
+          <path d="M 400 140 Q 260 180 120 225"/>
+          <path d="M 420 140 Q 360 180 300 225"/>
+          <line x1="450" y1="140" x2="480" y2="225"/>
+          <path d="M 480 140 Q 570 180 660 225"/>
+          <!-- Router to PII -->
+          <line x1="540" y1="115" x2="630" y2="115" stroke-dasharray="4,2"/>
+          <!-- PII to Gateway -->
+          <path d="M 720 140 Q 720 280 450 420" stroke-dasharray="4,2"/>
+          <!-- Gateway to cloud services (fan out) -->
+          <path d="M 380 470 Q 260 490 150 505" stroke-dasharray="4,2"/>
+          <line x1="450" y1="470" x2="450" y2="505" stroke-dasharray="4,2"/>
+          <path d="M 520 470 Q 640 490 750 505" stroke-dasharray="4,2"/>
+          <!-- Knowledge connections -->
+          <line x1="120" y1="275" x2="120" y2="305"/>
+          <path d="M 300 275 Q 210 290 150 305"/>
+          <!-- NAS connections (storage layer) -->
+          <path d="M 210 250 Q 500 270 755 335" stroke="#ec4899" stroke-dasharray="3,2"/>
+          <path d="M 380 250 Q 580 280 755 335" stroke="#ec4899" stroke-dasharray="3,2"/>
+          <path d="M 565 250 Q 680 290 755 335" stroke="#ec4899" stroke-dasharray="3,2"/>
+          <path d="M 745 250 L 780 290" stroke="#ec4899" stroke-dasharray="3,2"/>
+          <path d="M 210 330 Q 500 345 755 335" stroke="#ec4899" stroke-dasharray="3,2"/>
+          <!-- Local to response -->
+          <path d="M 120 275 Q 200 450 450 595"/>
+          <path d="M 300 275 Q 360 450 450 595"/>
+          <line x1="480" y1="275" x2="450" y2="595"/>
+          <path d="M 660 275 Q 580 450 450 595"/>
+          <!-- Cloud to response -->
+          <path d="M 150 555 Q 300 580 450 595" stroke-dasharray="4,2"/>
+          <line x1="450" y1="555" x2="450" y2="595" stroke-dasharray="4,2"/>
+          <path d="M 750 555 Q 600 580 450 595" stroke-dasharray="4,2"/>
+        </g>
+
+        <!-- Animated particles layer -->
+        <g id="particles"></g>
+
+        <!-- Legend -->
+        <g transform="translate(30, 655)">
+          <text fill="#a0aec0" font-size="10" font-weight="bold">LEGEND:</text>
+          <circle cx="80" cy="-3" r="3" fill="#48bb78"/>
+          <circle cx="85" cy="-1" r="2" fill="#48bb78" opacity="0.5"/>
+          <text x="93" y="1" fill="#a0aec0" font-size="9">Local</text>
+          <circle cx="135" cy="-3" r="3" fill="#b794f4"/>
+          <circle cx="140" cy="-1" r="2" fill="#b794f4" opacity="0.5"/>
+          <text x="148" y="1" fill="#a0aec0" font-size="9">Cloud</text>
+          <circle cx="190" cy="-3" r="3" fill="#f472b6"/>
+          <circle cx="195" cy="-1" r="2" fill="#f472b6" opacity="0.5"/>
+          <text x="203" y="1" fill="#a0aec0" font-size="9">Storage</text>
+          <line x1="260" y1="-3" x2="290" y2="-3" stroke="#48bb78" stroke-width="3"/>
+          <text x="298" y="1" fill="#a0aec0" font-size="9">Local Path</text>
+          <line x1="365" y1="-3" x2="395" y2="-3" stroke="#b794f4" stroke-width="3" stroke-dasharray="6,3"/>
+          <text x="403" y="1" fill="#a0aec0" font-size="9">Cloud Path</text>
+          <line x1="475" y1="-3" x2="505" y2="-3" stroke="#f472b6" stroke-width="2" stroke-dasharray="3,2"/>
+          <text x="513" y="1" fill="#a0aec0" font-size="9">NAS I/O</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Scenario Details -->
+    <div id="scenarioDetails" class="mt-4 bg-gray-800 rounded-lg p-4 hidden">
+      <div class="flex justify-between items-start">
+        <div>
+          <h3 id="scenarioTitle" class="font-bold text-lg mb-1"></h3>
+          <p id="scenarioDesc" class="text-gray-400 text-sm"></p>
+        </div>
+        <div id="scenarioType" class="rounded px-3 py-1 text-sm"></div>
+      </div>
+    </div>
+
+    <!-- Architecture Summary -->
+    <div class="mt-4 grid grid-cols-2 md:grid-cols-6 gap-2 text-xs">
+      <div class="bg-blue-900/50 rounded-lg p-2 border border-blue-700/30">
+        <div class="text-blue-300 font-bold">Mac Studio</div>
+        <div class="text-gray-400">256GB | 25-35 tok/s</div>
+      </div>
+      <div class="bg-green-900/50 rounded-lg p-2 border border-green-700/30">
+        <div class="text-green-300 font-bold">RTX 4090</div>
+        <div class="text-gray-400">24GB | 100-145 tok/s</div>
+      </div>
+      <div class="bg-green-900/50 rounded-lg p-2 border border-green-700/30">
+        <div class="text-green-300 font-bold">DGX Spark ×2</div>
+        <div class="text-gray-400">256GB | 1,700 prefill</div>
+      </div>
+      <div class="bg-orange-900/50 rounded-lg p-2 border border-orange-700/30">
+        <div class="text-orange-300 font-bold">OpenClaw K6</div>
+        <div class="text-gray-400">64GB | 24/7</div>
+      </div>
+      <div class="bg-pink-900/50 rounded-lg p-2 border border-pink-700/30">
+        <div class="text-pink-300 font-bold">Synology NAS</div>
+        <div class="text-gray-400">24TB | Models/Backups</div>
+      </div>
+      <div class="bg-purple-900/50 rounded-lg p-2 border border-purple-700/30">
+        <div class="text-purple-300 font-bold">Cloud Gateway</div>
+        <div class="text-gray-400">Brev | Gemini | Claude</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Flow path definitions
+    const flowPaths = {
+      'client-router': { type: 'line', points: [[450, 55], [450, 90]] },
+      'router-macStudio': { type: 'curve', points: [[400, 140], [260, 180], [120, 225]] },
+      'router-dgxSpark': { type: 'curve', points: [[420, 140], [360, 180], [300, 225]] },
+      'router-rtx4090': { type: 'line', points: [[450, 140], [480, 225]] },
+      'router-openClaw': { type: 'curve', points: [[480, 140], [570, 180], [660, 225]] },
+      'router-piiFilter': { type: 'line', points: [[540, 115], [630, 115]] },
+      'macStudio-knowledge': { type: 'line', points: [[120, 275], [120, 305]] },
+      'dgxSpark-knowledge': { type: 'curve', points: [[300, 275], [210, 290], [150, 305]] },
+      'knowledge-macStudio': { type: 'curve', points: [[150, 305], [170, 290], [170, 275]] },
+      'macStudio-nas': { type: 'curve', points: [[210, 250], [500, 270], [755, 335]] },
+      'nas-macStudio': { type: 'curve', points: [[755, 335], [500, 270], [210, 250]] },
+      'dgxSpark-nas': { type: 'curve', points: [[380, 250], [580, 280], [755, 335]] },
+      'openClaw-nas': { type: 'curve', points: [[745, 250], [780, 290], [780, 290]] },
+      'knowledge-nas': { type: 'curve', points: [[210, 330], [500, 345], [755, 335]] },
+      'piiFilter-cloudGateway': { type: 'curve', points: [[720, 140], [720, 280], [450, 420]] },
+      'cloudGateway-brev': { type: 'curve', points: [[380, 470], [260, 490], [150, 505]] },
+      'cloudGateway-gemini': { type: 'line', points: [[450, 470], [450, 505]] },
+      'cloudGateway-anthropic': { type: 'curve', points: [[520, 470], [640, 490], [750, 505]] },
+      'macStudio-response': { type: 'curve', points: [[120, 275], [200, 450], [450, 595]] },
+      'dgxSpark-response': { type: 'curve', points: [[300, 275], [360, 450], [450, 595]] },
+      'rtx4090-response': { type: 'line', points: [[480, 275], [450, 595]] },
+      'openClaw-response': { type: 'curve', points: [[660, 275], [580, 450], [450, 595]] },
+      'brev-response': { type: 'curve', points: [[150, 555], [300, 580], [450, 595]] },
+      'gemini-response': { type: 'line', points: [[450, 555], [450, 595]] },
+      'anthropic-response': { type: 'curve', points: [[750, 555], [600, 580], [450, 595]] },
+    };
+
+    const nodeColors = {
+      client: '#4a5568', router: '#2d6a4f', piiFilter: '#ed1c24',
+      macStudio: '#1565c0', dgxSpark: '#76b900', rtx4090: '#76b900',
+      openClaw: '#ff6f00', knowledge: '#9c27b0', nas: '#ec4899',
+      cloudGateway: '#6a1b9a', brev: '#ce93d8', gemini: '#ce93d8', 
+      anthropic: '#ce93d8', response: '#2d6a4f'
+    };
+
+    const scenarios = {
+      small: {
+        name: '7B Model — Fastest Local Path',
+        description: 'Small models route to RTX 4090 for maximum speed (100-145 tok/s)',
+        steps: [
+          { path: 'client-router', delay: 0 },
+          { path: 'router-rtx4090', delay: 700 },
+          { path: 'rtx4090-response', delay: 700 }
+        ],
+        nodes: ['client', 'router', 'rtx4090', 'response'],
+        metrics: { speed: 120, latency: 15, dest: 'RTX 4090 (Local)' },
+        isCloud: false
+      },
+      medium: {
+        name: '70B Model — Interactive + RAG',
+        description: 'Model loaded from NAS → Mac Studio inference → Knowledge Layer RAG',
+        steps: [
+          { path: 'client-router', delay: 0 },
+          { path: 'router-macStudio', delay: 700 },
+          { path: 'nas-macStudio', delay: 500 },
+          { path: 'macStudio-knowledge', delay: 600 },
+          { path: 'knowledge-macStudio', delay: 600 },
+          { path: 'macStudio-response', delay: 700 }
+        ],
+        nodes: ['client', 'router', 'macStudio', 'nas', 'knowledge', 'response'],
+        metrics: { speed: 30, latency: 45, dest: 'Mac Studio (Local)' },
+        isCloud: false
+      },
+      large: {
+        name: '236B Model — Maximum Local',
+        description: 'DeepSeek v3 loaded from NAS → Mac Studio 256GB unified memory',
+        steps: [
+          { path: 'client-router', delay: 0 },
+          { path: 'router-macStudio', delay: 700 },
+          { path: 'nas-macStudio', delay: 600 },
+          { path: 'macStudio-knowledge', delay: 600 },
+          { path: 'knowledge-macStudio', delay: 600 },
+          { path: 'macStudio-response', delay: 700 }
+        ],
+        nodes: ['client', 'router', 'macStudio', 'nas', 'knowledge', 'response'],
+        metrics: { speed: 3, latency: 200, dest: 'Mac Studio (Local)' },
+        isCloud: false
+      },
+      batch: {
+        name: 'Batch Processing — DGX Spark',
+        description: 'Multi-request batches → DGX Spark (1,700+ tok/s prefill) with NAS storage',
+        steps: [
+          { path: 'client-router', delay: 0 },
+          { path: 'router-dgxSpark', delay: 700 },
+          { path: 'dgxSpark-nas', delay: 500 },
+          { path: 'dgxSpark-knowledge', delay: 600 },
+          { path: 'dgxSpark-response', delay: 700 }
+        ],
+        nodes: ['client', 'router', 'dgxSpark', 'nas', 'knowledge', 'response'],
+        metrics: { speed: 50, latency: 80, dest: 'DGX Spark (Local)' },
+        isCloud: false
+      },
+      assistant: {
+        name: 'OpenClaw — Personal Assistant',
+        description: 'Always-on K6 (64GB) with persistent memory on NAS',
+        steps: [
+          { path: 'client-router', delay: 0 },
+          { path: 'router-openClaw', delay: 700 },
+          { path: 'openClaw-nas', delay: 500 },
+          { path: 'openClaw-response', delay: 700 }
+        ],
+        nodes: ['client', 'router', 'openClaw', 'nas', 'response'],
+        metrics: { speed: 15, latency: 30, dest: 'OpenClaw K6 (Local)' },
+        isCloud: false
+      },
+      overflow: {
+        name: '405B+ Model — Cloud Overflow',
+        description: 'Exceeds local → PII filter → Cloud Gateway → NVIDIA Brev',
+        steps: [
+          { path: 'client-router', delay: 0 },
+          { path: 'router-piiFilter', delay: 700 },
+          { path: 'piiFilter-cloudGateway', delay: 900 },
+          { path: 'cloudGateway-brev', delay: 700 },
+          { path: 'brev-response', delay: 700 }
+        ],
+        nodes: ['client', 'router', 'piiFilter', 'cloudGateway', 'brev', 'response'],
+        metrics: { speed: 40, latency: 300, dest: 'NVIDIA Brev (Cloud)' },
+        isCloud: true
+      },
+      gemini: {
+        name: 'Fast Cloud — Gemini API',
+        description: 'Cost-effective → PII filter → Cloud Gateway → Gemini',
+        steps: [
+          { path: 'client-router', delay: 0 },
+          { path: 'router-piiFilter', delay: 700 },
+          { path: 'piiFilter-cloudGateway', delay: 900 },
+          { path: 'cloudGateway-gemini', delay: 700 },
+          { path: 'gemini-response', delay: 700 }
+        ],
+        nodes: ['client', 'router', 'piiFilter', 'cloudGateway', 'gemini', 'response'],
+        metrics: { speed: 100, latency: 150, dest: 'Gemini API (Cloud)' },
+        isCloud: true
+      },
+      reasoning: {
+        name: 'Complex Reasoning — Claude API',
+        description: 'Frontier reasoning → PII filter → Cloud Gateway → Claude',
+        steps: [
+          { path: 'client-router', delay: 0 },
+          { path: 'router-piiFilter', delay: 700 },
+          { path: 'piiFilter-cloudGateway', delay: 900 },
+          { path: 'cloudGateway-anthropic', delay: 700 },
+          { path: 'anthropic-response', delay: 700 }
+        ],
+        nodes: ['client', 'router', 'piiFilter', 'cloudGateway', 'anthropic', 'response'],
+        metrics: { speed: 80, latency: 250, dest: 'Claude API (Cloud)' },
+        isCloud: true
+      }
+    };
+
+    let isAnimating = false;
+    let activeParticles = [];
+    let animationFrame = null;
+
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function getQuadraticPoint(t, p0, p1, p2) {
+      const mt = 1 - t;
+      return {
+        x: mt * mt * p0[0] + 2 * mt * t * p1[0] + t * t * p2[0],
+        y: mt * mt * p0[1] + 2 * mt * t * p1[1] + t * t * p2[1]
+      };
+    }
+
+    function getLinearPoint(t, p0, p1) {
+      return {
+        x: p0[0] + (p1[0] - p0[0]) * t,
+        y: p0[1] + (p1[1] - p0[1]) * t
+      };
+    }
+
+    function getPointOnPath(pathDef, progress) {
+      const t = easeInOutCubic(progress);
+      if (pathDef.type === 'curve' && pathDef.points.length === 3) {
+        return getQuadraticPoint(t, pathDef.points[0], pathDef.points[1], pathDef.points[2]);
+      } else {
+        return getLinearPoint(t, pathDef.points[0], pathDef.points[pathDef.points.length - 1]);
+      }
+    }
+
+    function createPathString(pathDef) {
+      if (pathDef.type === 'curve' && pathDef.points.length === 3) {
+        return `M ${pathDef.points[0][0]} ${pathDef.points[0][1]} Q ${pathDef.points[1][0]} ${pathDef.points[1][1]} ${pathDef.points[2][0]} ${pathDef.points[2][1]}`;
+      } else {
+        return `M ${pathDef.points[0][0]} ${pathDef.points[0][1]} L ${pathDef.points[1][0]} ${pathDef.points[1][1]}`;
+      }
+    }
+
+    function resetDiagram() {
+      document.querySelectorAll('.node rect').forEach(rect => {
+        rect.setAttribute('fill', '#2d3748');
+        rect.setAttribute('stroke-width', '1.5');
+      });
+      document.querySelectorAll('.node').forEach(node => {
+        node.classList.remove('node-active');
+        node.removeAttribute('filter');
+      });
+      
+      document.getElementById('activeFlowPaths').innerHTML = '';
+      document.getElementById('particles').innerHTML = '';
+      activeParticles = [];
+      
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+      }
+    }
+
+    function highlightNode(nodeId, color) {
+      const node = document.getElementById(`node-${nodeId}`);
+      if (node) {
+        const rect = node.querySelector('rect');
+        rect.setAttribute('fill', color);
+        rect.setAttribute('stroke-width', '2.5');
+        node.classList.add('node-active');
+        node.setAttribute('filter', 'url(#glow-soft)');
+      }
+    }
+
+    function drawFlowPath(pathKey, color, isCloud) {
+      const pathDef = flowPaths[pathKey];
+      if (!pathDef) return;
+      
+      const pathsGroup = document.getElementById('activeFlowPaths');
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', createPathString(pathDef));
+      path.setAttribute('stroke', color);
+      path.setAttribute('stroke-width', '3');
+      path.setAttribute('fill', 'none');
+      path.setAttribute('opacity', '0.6');
+      if (isCloud) {
+        path.setAttribute('stroke-dasharray', '8,4');
+      }
+      
+      const length = path.getTotalLength ? path.getTotalLength() : 500;
+      path.style.strokeDasharray = length;
+      path.style.strokeDashoffset = length;
+      path.style.transition = 'stroke-dashoffset 0.7s ease-out';
+      
+      pathsGroup.appendChild(path);
+      
+      requestAnimationFrame(() => {
+        path.style.strokeDashoffset = '0';
+      });
+    }
+
+    // Create particle stream - more particle-like with varied sizes and spread
+    function createParticleStream(pathKey, isCloud, count = 25) {
+      const pathDef = flowPaths[pathKey];
+      if (!pathDef) return;
+      
+      const baseColor = isCloud ? '#b794f4' : '#48bb78';
+      const now = performance.now();
+      
+      for (let i = 0; i < count; i++) {
+        const size = 1 + Math.random() * 2.5; // Small particles 1-3.5px
+        const speed = 0.7 + Math.random() * 0.6;
+        const offset = (Math.random() - 0.5) * 8; // Spread perpendicular to path
+        
+        activeParticles.push({
+          pathKey,
+          pathDef,
+          startTime: now + i * 35, // Fast spawn
+          duration: 1000 / speed,
+          color: baseColor,
+          size,
+          offset,
+          opacity: 0.3 + Math.random() * 0.7
+        });
+      }
+    }
+
+    function renderParticles() {
+      const particlesGroup = document.getElementById('particles');
+      particlesGroup.innerHTML = '';
+      
+      const now = performance.now();
+      
+      activeParticles = activeParticles.filter(p => {
+        const elapsed = now - p.startTime;
+        if (elapsed < 0) return true;
+        if (elapsed > p.duration) return false;
+        
+        const progress = elapsed / p.duration;
+        const pos = getPointOnPath(p.pathDef, progress);
+        
+        // Calculate perpendicular for spread
+        const nextPos = getPointOnPath(p.pathDef, Math.min(1, progress + 0.01));
+        const dx = nextPos.x - pos.x;
+        const dy = nextPos.y - pos.y;
+        const len = Math.sqrt(dx * dx + dy * dy) || 1;
+        const perpX = -dy / len * p.offset;
+        const perpY = dx / len * p.offset;
+        
+        // Fade in/out
+        let opacity = p.opacity;
+        if (progress < 0.15) opacity *= progress / 0.15;
+        if (progress > 0.85) opacity *= (1 - progress) / 0.15;
+        
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', pos.x + perpX);
+        circle.setAttribute('cy', pos.y + perpY);
+        circle.setAttribute('r', p.size);
+        circle.setAttribute('fill', p.color);
+        circle.setAttribute('opacity', opacity);
+        circle.setAttribute('filter', 'url(#particle-glow)');
+        particlesGroup.appendChild(circle);
+        
+        return true;
+      });
+      
+      if (activeParticles.length > 0 || isAnimating) {
+        animationFrame = requestAnimationFrame(renderParticles);
+      }
+    }
+
+    async function runScenario(scenarioKey) {
+      if (isAnimating) return;
+      
+      const scenario = scenarios[scenarioKey];
+      isAnimating = true;
+      
+      document.querySelectorAll('.scenario-btn').forEach(btn => {
+        btn.classList.remove('bg-green-600', 'bg-purple-600', 'ring-2', 'ring-white');
+        btn.classList.add('bg-gray-700', 'opacity-50', 'cursor-not-allowed');
+      });
+      const activeBtn = document.querySelector(`[data-scenario="${scenarioKey}"]`);
+      activeBtn.classList.remove('bg-gray-700');
+      activeBtn.classList.add(scenario.isCloud ? 'bg-purple-600' : 'bg-green-600', 'ring-2', 'ring-white');
+      
+      document.getElementById('status').textContent = '⏳ ' + scenario.description;
+      document.getElementById('status').className = 'text-yellow-400';
+      
+      document.getElementById('metrics').classList.remove('hidden');
+      document.getElementById('speed').textContent = `${scenario.metrics.speed} tok/s`;
+      document.getElementById('latency').textContent = `${scenario.metrics.latency}ms`;
+      document.getElementById('dest').textContent = scenario.metrics.dest;
+      document.getElementById('dest').className = scenario.isCloud ? 'text-purple-400' : 'text-green-400';
+      
+      document.getElementById('scenarioDetails').classList.remove('hidden');
+      document.getElementById('scenarioTitle').textContent = scenario.name;
+      document.getElementById('scenarioDesc').textContent = scenario.description;
+      const typeDiv = document.getElementById('scenarioType');
+      typeDiv.className = `rounded px-3 py-1 text-sm ${scenario.isCloud ? 'bg-purple-600' : 'bg-green-600'}`;
+      typeDiv.textContent = scenario.isCloud ? '☁️ Cloud' : '🏠 Local';
+      
+      resetDiagram();
+      renderParticles();
+      
+      for (const nodeId of scenario.nodes) {
+        highlightNode(nodeId, nodeColors[nodeId]);
+      }
+      
+      const pathColor = scenario.isCloud ? '#b794f4' : '#48bb78';
+      
+      for (const step of scenario.steps) {
+        await new Promise(resolve => setTimeout(resolve, step.delay));
+        drawFlowPath(step.path, pathColor, scenario.isCloud);
+        createParticleStream(step.path, scenario.isCloud);
+      }
+      
+      await new Promise(resolve => setTimeout(resolve, 1300));
+      
+      document.getElementById('status').textContent = `✅ Complete: ${scenario.metrics.dest}`;
+      document.getElementById('status').className = scenario.isCloud ? 'text-purple-400' : 'text-green-400';
+      
+      document.querySelectorAll('.scenario-btn').forEach(btn => {
+        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+      });
+      
+      isAnimating = false;
+    }
+  </script>
+</body>
+</html>

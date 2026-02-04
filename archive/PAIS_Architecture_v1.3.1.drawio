@@ -1,0 +1,386 @@
+<mxfile host="app.diagrams.net" modified="2026-02-01T00:00:00.000Z" agent="Claude" version="1.3.1">
+  <diagram name="PAIS Architecture v1.3.1" id="pais-architecture">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- Title -->
+        <mxCell id="title" value="PAIS Framework v1.3.1 — Private AI Sovereignty Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1;fontColor=#1a1a2e;" parent="1" vertex="1">
+          <mxGeometry x="400" y="20" width="800" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle" value="Local-First Inference with Intelligent Cloud Overflow | February 2026" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=2;fontColor=#666666;" parent="1" vertex="1">
+          <mxGeometry x="400" y="55" width="800" height="25" as="geometry"/>
+        </mxCell>
+
+        <!-- Tailscale Mesh Network - Top Banner -->
+        <mxCell id="tailscale-banner" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#16697a;strokeColor=#0d4f5c;strokeWidth=3;" parent="1" vertex="1">
+          <mxGeometry x="40" y="90" width="1520" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="tailscale-label" value="🔒 TAILSCALE MESH NETWORK — WireGuard Zero-Trust VPN (100.x.x.x)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="40" y="100" width="1520" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== LAYER 1: ORCHESTRATION ==================== -->
+        <mxCell id="layer1-container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f4ea;strokeColor=#2d6a4f;strokeWidth=2;dashed=0;" parent="1" vertex="1">
+          <mxGeometry x="40" y="170" width="1520" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="layer1-label" value="LAYER 1: ORCHESTRATION &amp; CONTROL PLANE" style="text;html=1;strokeColor=none;fillColor=#2d6a4f;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="50" y="180" width="350" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Mac mini M4 Pro -->
+        <mxCell id="mac-mini" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2d6a4f;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="60" y="220" width="280" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="mac-mini-header" value="🍎 Mac mini M4 Pro" style="text;html=1;strokeColor=none;fillColor=#2d6a4f;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="70" y="225" width="260" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="mac-mini-specs" value="14-core CPU | 48GB | 1TB SSD&#xa;Role: Control Plane &amp; Orchestration" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="70" y="252" width="260" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="mac-mini-services" value="LangFlow | LMStudio | AnythingLLM&#xa;n8n | Traefik | Prometheus | Grafana&#xa;Model Router + Governance Engine" style="text;html=1;strokeColor=none;fillColor=#e8f4ea;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=9;fontColor=#1a1a2e;" parent="1" vertex="1">
+          <mxGeometry x="70" y="285" width="260" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Orchestration Services Detail -->
+        <mxCell id="orch-services" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2d6a4f;strokeWidth=1;dashed=1;" parent="1" vertex="1">
+          <mxGeometry x="360" y="220" width="700" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc-langflow" value="🔀 LangFlow&#xa;Visual Workflows&#xa;:7860" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e4c7;strokeColor=#2d6a4f;fontSize=9;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="370" y="230" width="100" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc-lmstudio" value="🧪 LM Studio&#xa;Model Testing&#xa;:1234" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e4c7;strokeColor=#2d6a4f;fontSize=9;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="480" y="230" width="100" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc-anythingllm" value="💬 AnythingLLM&#xa;RAG + Chat&#xa;:3001" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e4c7;strokeColor=#2d6a4f;fontSize=9;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="590" y="230" width="100" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc-n8n" value="⚡ n8n&#xa;Automation&#xa;:5678" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e4c7;strokeColor=#2d6a4f;fontSize=9;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="700" y="230" width="100" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc-traefik" value="🚪 Traefik&#xa;API Gateway&#xa;:443" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e4c7;strokeColor=#2d6a4f;fontSize=9;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="810" y="230" width="100" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc-grafana" value="📊 Grafana&#xa;Dashboards&#xa;:3000" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e4c7;strokeColor=#2d6a4f;fontSize=9;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="920" y="230" width="100" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc-router" value="🎯 Model Router&#xa;Tiered Routing + Cloud Overflow&#xa;Local → DGX → Cloud" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#40916c;strokeColor=#1b4332;fontSize=9;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="370" y="290" width="250" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc-governance" value="🛡️ Governance Engine&#xa;Per-User Policies | PII Redaction | Rate Limits" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#40916c;strokeColor=#1b4332;fontSize=9;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="630" y="290" width="250" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc-prometheus" value="📈 Prometheus&#xa;:9090" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e4c7;strokeColor=#2d6a4f;fontSize=9;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="890" y="290" width="80" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="svc-registry" value="📦 Registry&#xa;:5000" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e4c7;strokeColor=#2d6a4f;fontSize=9;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="980" y="290" width="70" height="45" as="geometry"/>
+        </mxCell>
+
+        <!-- Mobile Workstations in Orchestration -->
+        <mxCell id="mobile-orch" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2d6a4f;strokeWidth=1;dashed=1;" parent="1" vertex="1">
+          <mxGeometry x="1080" y="220" width="470" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="mobile-label" value="📱 MOBILE WORKSTATIONS (Development &amp; Field Work)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1;fontColor=#2d6a4f;" parent="1" vertex="1">
+          <mxGeometry x="1090" y="225" width="450" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="mbp" value="🍎 MacBook Pro 16&quot;&#xa;M4 Pro | 48GB | 1TB&#xa;RTX 5000 Ada equiv" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d8f3dc;strokeColor=#2d6a4f;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="1090" y="250" width="110" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="thinkpad" value="💻 ThinkPad P14s G6&#xa;Ryzen AI 9 HX PRO 370&#xa;96GB | Radeon 890M" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d8f3dc;strokeColor=#2d6a4f;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="1210" y="250" width="110" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="precision1" value="🖥️ Dell Precision 5690&#xa;Ultra 9 185H | RTX 5000 Ada&#xa;Qty: 2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d8f3dc;strokeColor=#2d6a4f;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="1330" y="250" width="110" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="promax" value="🖥️ Dell Pro Max 16+&#xa;Ultra 9 285HX&#xa;RTX PRO 5000 Blackwell" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d8f3dc;strokeColor=#2d6a4f;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="1090" y="310" width="110" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="nucbox" value="📦 GMKtec NucBox M7&#xa;Ryzen 7 PRO 6850H&#xa;16GB | Qty: 2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d8f3dc;strokeColor=#2d6a4f;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="1210" y="310" width="110" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="k6" value="🎮 GMKtec K6&#xa;Ryzen 7 7840HS&#xa;32GB | Dual 2.5GbE" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d8f3dc;strokeColor=#2d6a4f;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="1330" y="310" width="110" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== LAYER 2: PRIMARY INFERENCE ==================== -->
+        <mxCell id="layer2-container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;strokeWidth=2;dashed=0;" parent="1" vertex="1">
+          <mxGeometry x="40" y="370" width="1520" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="layer2-label" value="LAYER 2: PRIMARY INFERENCE — Ollama + Local Models" style="text;html=1;strokeColor=none;fillColor=#1565c0;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="50" y="380" width="400" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Mac Studio M3 Ultra -->
+        <mxCell id="mac-studio" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1565c0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="60" y="420" width="350" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="mac-studio-header" value="🍎 Mac Studio M3 Ultra — PRIMARY INFERENCE" style="text;html=1;strokeColor=none;fillColor=#1565c0;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="70" y="425" width="330" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="mac-studio-specs" value="32-core CPU | 80-core GPU | 256GB Unified Memory | 4TB SSD&#xa;Memory Bandwidth: 819 GB/s | Neural Engine: 32-core&#xa;Role: Interactive Inference (Fastest Decoder for 25-256GB Models)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="70" y="452" width="330" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="mac-studio-models" value="Ollama :11434 — Llama 3.3 70B Q4 (25-35 tok/s) | Qwen 2.5 72B&#xa;Llama 3.1 405B Q4 (~200GB) | ComfyUI | Whisper Large" style="text;html=1;strokeColor=none;fillColor=#bbdefb;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=9;fontColor=#1a1a2e;" parent="1" vertex="1">
+          <mxGeometry x="70" y="500" width="330" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- DGX Spark #1 -->
+        <mxCell id="dgx-spark-1" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1565c0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="430" y="420" width="280" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="dgx-spark-1-header" value="🟢 DGX Spark #1 — BATCH INFERENCE" style="text;html=1;strokeColor=none;fillColor=#76b900;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="440" y="425" width="260" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="dgx-spark-1-specs" value="GB10 Grace Blackwell | 128GB LPDDR5x | 4TB NVMe&#xa;20-core Arm CPU | 273 GB/s Bandwidth&#xa;Role: High-Concurrency, Multi-Turn Batch" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="440" y="452" width="260" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="dgx-spark-1-models" value="Ollama :11434 — 70B Multi-Turn Batch&#xa;Prefill Optimized (1,700+ tok/s prefill)&#xa;vLLM for Advanced Batching" style="text;html=1;strokeColor=none;fillColor=#c5e1a5;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=9;fontColor=#1a1a2e;" parent="1" vertex="1">
+          <mxGeometry x="440" y="500" width="260" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- DGX Spark #2 -->
+        <mxCell id="dgx-spark-2" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1565c0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="730" y="420" width="280" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="dgx-spark-2-header" value="🟢 DGX Spark #2 — FINE-TUNING" style="text;html=1;strokeColor=none;fillColor=#76b900;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="740" y="425" width="260" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="dgx-spark-2-specs" value="GB10 Grace Blackwell | 128GB LPDDR5x | 4TB NVMe&#xa;20-core Arm CPU | 273 GB/s Bandwidth&#xa;Role: LoRA Training, Model Experimentation" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="740" y="452" width="260" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="dgx-spark-2-models" value="Fine-Tuning: PEFT/LoRA (268M trainable)&#xa;Ollama Backup | vLLM Experiments&#xa;180B+ Model Testing (Rare)" style="text;html=1;strokeColor=none;fillColor=#c5e1a5;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=9;fontColor=#1a1a2e;" parent="1" vertex="1">
+          <mxGeometry x="740" y="500" width="260" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- Alienware Aurora RTX 4090 -->
+        <mxCell id="aurora" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1565c0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="1030" y="420" width="250" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="aurora-header" value="🎮 Alienware Aurora R16 — CUDA" style="text;html=1;strokeColor=none;fillColor=#76b900;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="1040" y="425" width="230" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="aurora-specs" value="RTX 4090 24GB GDDR6X | i9-14900KF | 64GB DDR5&#xa;Memory Bandwidth: 1,008 GB/s&#xa;Role: Fastest ≤24GB Models (100-145 tok/s)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="1040" y="452" width="230" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="aurora-models" value="Ollama CUDA :11434&#xa;7B-22B Q8 (100-145 tok/s)&#xa;SDXL (~2-3s/image) | TensorRT" style="text;html=1;strokeColor=none;fillColor=#c5e1a5;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=9;fontColor=#1a1a2e;" parent="1" vertex="1">
+          <mxGeometry x="1040" y="500" width="230" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- GMKtec AI Max+ 395 -->
+        <mxCell id="aimax" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1565c0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="1300" y="420" width="250" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="aimax-header" value="🔴 GMKtec EVO-X2 — KNOWLEDGE LAYER" style="text;html=1;strokeColor=none;fillColor=#ed1c24;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="1310" y="425" width="230" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="aimax-specs" value="Ryzen AI Max+ 395 | 128GB LPDDR5X | 2TB NVMe&#xa;40 RDNA 3.5 CUs | NPU 50 TOPS | 256 GB/s BW&#xa;Role: Vector DB, Embeddings, Document Processing" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="1310" y="452" width="230" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="aimax-services" value="Qdrant :6333 (64GB) | Redis :6379 (32GB)&#xa;nomic-embed (NPU) | Document Ingestion&#xa;Semantic Cache | Chunking Pipeline" style="text;html=1;strokeColor=none;fillColor=#ffcdd2;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=9;fontColor=#1a1a2e;" parent="1" vertex="1">
+          <mxGeometry x="1310" y="500" width="230" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== LAYER 3: EDGE INFERENCE ==================== -->
+        <mxCell id="layer3-container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;strokeWidth=2;dashed=0;" parent="1" vertex="1">
+          <mxGeometry x="40" y="590" width="760" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="layer3-label" value="LAYER 3: EDGE INFERENCE — Low-Latency IoT" style="text;html=1;strokeColor=none;fillColor=#e65100;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="50" y="600" width="340" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Jetson Orin Nano -->
+        <mxCell id="jetson-group" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e65100;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="60" y="640" width="360" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="jetson-header" value="🟢 Jetson Orin Nano Super × 3" style="text;html=1;strokeColor=none;fillColor=#76b900;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="70" y="645" width="340" height="22" as="geometry"/>
+        </mxCell>
+        <mxCell id="jetson-specs" value="1024 CUDA + 32 Tensor Cores | 8GB LPDDR5 | 102 GB/s&#xa;15W TDP | Edge STT/TTS, Voice Assistants, IoT Gateway" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="70" y="670" width="340" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="jetson-models" value="Ollama :11434 — Qwen 2.5 7B Q4 | Whisper Tiny/Base | Piper TTS" style="text;html=1;strokeColor=none;fillColor=#ffe0b2;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=9;fontColor=#1a1a2e;" parent="1" vertex="1">
+          <mxGeometry x="70" y="705" width="340" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Raspberry Pi 5 -->
+        <mxCell id="rpi-group" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#e65100;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="440" y="640" width="350" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="rpi-header" value="🍓 Raspberry Pi 5 × 3" style="text;html=1;strokeColor=none;fillColor=#c51a4a;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="450" y="645" width="330" height="22" as="geometry"/>
+        </mxCell>
+        <mxCell id="rpi-specs" value="BCM2712 Quad-Core A76 2.4GHz | 16GB LPDDR4X&#xa;10W TDP | Home Automation, Monitoring, DNS, Pi-hole" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="450" y="670" width="330" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="rpi-services" value="Home Assistant | Node-RED | Pi-hole DNS | Piper TTS | Monitoring Agents" style="text;html=1;strokeColor=none;fillColor=#ffe0b2;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=9;fontColor=#1a1a2e;" parent="1" vertex="1">
+          <mxGeometry x="450" y="705" width="330" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== LAYER 4: STORAGE ==================== -->
+        <mxCell id="layer4-container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#ad1457;strokeWidth=2;dashed=0;" parent="1" vertex="1">
+          <mxGeometry x="820" y="590" width="740" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="layer4-label" value="LAYER 4: STORAGE &amp; DATA" style="text;html=1;strokeColor=none;fillColor=#ad1457;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="830" y="600" width="240" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Synology NAS -->
+        <mxCell id="nas" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ad1457;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="840" y="640" width="350" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="nas-header" value="💾 Synology DS423 NAS" style="text;html=1;strokeColor=none;fillColor=#ad1457;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="850" y="645" width="330" height="22" as="geometry"/>
+        </mxCell>
+        <mxCell id="nas-specs" value="4× 6TB IronWolf Pro | SHR + Btrfs | 24TB Usable | 10GbE&#xa;Role: Model Library, Backups, Docker Registry, Family Data" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="850" y="670" width="330" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="nas-volumes" value="/models (~3TB) | /qdrant | /docker | /git | /backups | /family" style="text;html=1;strokeColor=none;fillColor=#f8bbd9;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=9;fontColor=#1a1a2e;" parent="1" vertex="1">
+          <mxGeometry x="850" y="705" width="330" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Backup Strategy -->
+        <mxCell id="backup" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ad1457;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="1210" y="640" width="340" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="backup-header" value="☁️ 3-2-1 Backup Strategy" style="text;html=1;strokeColor=none;fillColor=#7b1fa2;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="1220" y="645" width="320" height="22" as="geometry"/>
+        </mxCell>
+        <mxCell id="backup-detail" value="Primary: DS423 NAS (RAID) | Secondary: Local USB&#xa;Offsite: Backblaze B2 (AES-256 Encrypted)&#xa;Schedule: Daily 3 AM | Retention: 30 days" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="1220" y="670" width="320" height="65" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== CLOUD OVERFLOW ==================== -->
+        <mxCell id="cloud-container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#6a1b9a;strokeWidth=2;dashed=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="770" width="1520" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="cloud-label" value="☁️ CLOUD OVERFLOW — Intelligent Routing When Local Insufficient (5% of Workloads)" style="text;html=1;strokeColor=none;fillColor=#6a1b9a;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="50" y="780" width="550" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="cloud-pii" value="⚠️ PII REDACTION REQUIRED" style="text;html=1;strokeColor=none;fillColor=#ffcdd2;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1;fontColor=#b71c1c;" parent="1" vertex="1">
+          <mxGeometry x="620" y="780" width="200" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Cloud Services -->
+        <mxCell id="cloud-brev" value="🟢 NVIDIA Brev&#xa;api.brev.dev&#xa;405B+ Models, GPU Workloads" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#6a1b9a;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="60" y="820" width="200" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="cloud-vertex" value="🔵 Google Vertex AI&#xa;aiplatform.googleapis.com&#xa;Enterprise Inference, Fine-Tuning" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#6a1b9a;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="280" y="820" width="220" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="cloud-gemini" value="🔵 Gemini API&#xa;generativelanguage.googleapis.com&#xa;Fast, Cost-Effective General Tasks" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#6a1b9a;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="520" y="820" width="220" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="cloud-eleven" value="🎙️ ElevenLabs&#xa;api.elevenlabs.io&#xa;Professional Voice Gen &amp; Cloning" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#6a1b9a;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="760" y="820" width="200" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="cloud-anthropic" value="🟠 Anthropic Claude&#xa;api.anthropic.com&#xa;Complex Reasoning, Long Context" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#6a1b9a;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="980" y="820" width="200" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="cloud-openai" value="🟢 OpenAI&#xa;api.openai.com&#xa;GPT-4o, DALL-E, Whisper API" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#6a1b9a;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1200" y="820" width="180" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="cloud-b2" value="☁️ Backblaze B2&#xa;Encrypted Backups&#xa;$6/TB/month" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#6a1b9a;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1400" y="820" width="150" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== DATA FLOW ARROWS ==================== -->
+        <!-- Orchestration to Inference -->
+        <mxCell id="arrow1" value="" style="endArrow=classic;startArrow=classic;html=1;strokeColor=#1565c0;strokeWidth=2;entryX=0.5;entryY=0;exitX=0.5;exitY=1;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="350" as="sourcePoint"/>
+            <mxPoint x="200" y="420" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow1-label" value="API" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontColor=#1565c0;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="170" y="375" width="30" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- Inference to Edge -->
+        <mxCell id="arrow2" value="" style="endArrow=classic;startArrow=classic;html=1;strokeColor=#e65100;strokeWidth=2;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="240" y="560" as="sourcePoint"/>
+            <mxPoint x="240" y="640" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow2-label" value="Ollama" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontColor=#e65100;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="205" y="590" width="40" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- Inference to Storage -->
+        <mxCell id="arrow3" value="" style="endArrow=classic;startArrow=classic;html=1;strokeColor=#ad1457;strokeWidth=2;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1015" y="560" as="sourcePoint"/>
+            <mxPoint x="1015" y="640" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow3-label" value="NFS/SMB" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontColor=#ad1457;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="975" y="590" width="50" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- Orchestration to Cloud -->
+        <mxCell id="arrow4" value="" style="endArrow=classic;html=1;strokeColor=#6a1b9a;strokeWidth=2;dashed=1;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="800" y="350" as="sourcePoint"/>
+            <mxPoint x="800" y="770" as="targetPoint"/>
+            <Array as="points">
+              <mxPoint x="1560" y="350"/>
+              <mxPoint x="1560" y="760"/>
+              <mxPoint x="800" y="760"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow4-label" value="Cloud Overflow&#xa;(When Local Insufficient)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontColor=#6a1b9a;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1455" y="530" width="90" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== LEGEND ==================== -->
+        <mxCell id="legend-container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fafafa;strokeColor=#9e9e9e;strokeWidth=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="920" width="1520" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend-title" value="LEGEND" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="50" y="925" width="80" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- Hardware Counts -->
+        <mxCell id="legend-counts" value="HARDWARE SUMMARY: 🍎 Apple: 3 devices | 🟢 NVIDIA: 6 devices | 🔴 AMD: 5 devices | 🍓 RPi: 3 devices | 💾 NAS: 1 device" style="text;html=1;strokeColor=none;fillColor=#e0e0e0;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="50" y="950" width="700" height="25" as="geometry"/>
+        </mxCell>
+        
+        <!-- Memory Summary -->
+        <mxCell id="legend-memory" value="TOTAL UNIFIED MEMORY: 256GB (Mac Studio) + 256GB (2× DGX Spark) + 128GB (AI Max+) + 24GB (Jetson×3) + 48GB (Pi×3) = 736GB+ Local AI Capacity" style="text;html=1;strokeColor=none;fillColor=#e0e0e0;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontColor=#333333;" parent="1" vertex="1">
+          <mxGeometry x="50" y="980" width="700" height="25" as="geometry"/>
+        </mxCell>
+
+        <!-- Layer Colors -->
+        <mxCell id="legend-l1" value="Orchestration" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f4ea;strokeColor=#2d6a4f;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="780" y="950" width="90" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend-l2" value="Inference" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="880" y="950" width="80" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend-l3" value="Edge" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#e65100;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="970" y="950" width="60" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend-l4" value="Storage" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#ad1457;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="1040" y="950" width="70" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend-cloud" value="Cloud Overflow" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#6a1b9a;fontSize=10;dashed=1;" parent="1" vertex="1">
+          <mxGeometry x="1120" y="950" width="100" height="25" as="geometry"/>
+        </mxCell>
+        
+        <!-- Version -->
+        <mxCell id="legend-version" value="PAIS Framework v1.3.1 | February 2026 | Local-First with Cloud Overflow | 95%+ On-Device Inference" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=2;fontColor=#666666;" parent="1" vertex="1">
+          <mxGeometry x="1230" y="980" width="320" height="25" as="geometry"/>
+        </mxCell>
+
+        <!-- Key Metrics -->
+        <mxCell id="legend-metrics" value="KEY: Mac Studio 819 GB/s (fastest decoder) | RTX 4090 1,008 GB/s (fastest ≤24GB) | DGX Spark 1,700+ tok/s prefill" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666;" parent="1" vertex="1">
+          <mxGeometry x="780" y="980" width="440" height="25" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
