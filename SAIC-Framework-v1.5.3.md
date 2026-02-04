@@ -1,17 +1,13 @@
 # Sovereign AI Cloud
 
-**A Framework for Consumer Control of Local AI Infrastructure**
+**A Framework for Local AI Infrastructure**
 
 **Version 1.5.3**  
 **February 2026**
 
 *Includes: Unified Knowledge Layer (disk-based), Family Learning Features, Visual AI Hub (RTX 4090), Isolated OpenClaw on Raspberry Pi 5, Storage Architecture, Tailscale Networking, Containerization Strategy, Observability, Security Hardening, Local-First with Cloud Overflow, Multi-Tenancy, Flexible Orchestration, Windows Support Nodes, and Fully Documented Functional Specifications*
 
----
-
 > *"If I build the tools, I have only myself to blame for the exposure and consequences of my and my family's use."*
-
----
 
 ## Table of Contents
 
@@ -37,8 +33,6 @@
 20. [Fine-Tuning Infrastructure](#20-fine-tuning-infrastructure)  
 21. [Multi-Modal Capabilities](#21-multi-modal-capabilities)  
 22. [Quick Reference](#22-quick-reference)  
-
----
 
 ## 1. Executive Summary
 
@@ -249,7 +243,6 @@ Provide each learner with content and practice that matches their current master
 
 > **User Story:** Child A repeatedly struggles with fraction addition but quickly grasps geometry. SAIC tracks this pattern and continues to surface fraction practice problems while simultaneously unlocking more advanced geometry challenges, keeping the learner engaged without boredom or frustration.
 
----
 
 #### 3.2.2 Socratic Tutor Mode (Question-First Teaching)
 
@@ -298,8 +291,6 @@ Support multi-age learning by providing different explanation styles for the sam
 > - An analogy using rubber sheets and bowling balls to illustrate spacetime curvature.  
 > - A technical explanation referencing mass, acceleration, and general relativity.
 
----
-
 #### 3.2.4 Local Progress Analytics & Learning Dashboards
 
 **Objective**  
@@ -323,8 +314,6 @@ Give parents and learners a high-level view of progress without creating a high-
 
 > **User Story:** Parent opens the dashboard and sees that Child A has steadily increased time spent on writing over the last month and that algebra mastery has improved from 60% to 75%. This informs planning for future lessons and pacing.
 
----
-
 #### 3.2.5 AI-Assisted Project-Based Learning (PBL) Coach
 
 **Objective**  
@@ -344,8 +333,6 @@ Help learners plan, execute, and reflect on complex projects by providing AI ass
 - The PBL Coach can integrate with JupyterLab for data and coding projects, as well as with Jekyll for final portfolio publishing.
 
 > **User Story:** Child B wants to build a small weather station. SAIC helps them define the project: sensors to use, data to collect, how often to sample, and how to visualize results. After the project, SAIC prompts them to reflect: “What went well? What was hardest? What would you change in version 2?”
-
----
 
 #### 3.2.6 Offline-First Assessment & Reflection Journals
 
@@ -370,8 +357,6 @@ Cultivate metacognition and self-directed learning by encouraging regular reflec
 
 > **User Story:** Child A writes each evening about what they learned in math and reading. Six months later, SAIC can summarize the recurring themes and highlight where confidence has increased or decreased.
 
----
-
 #### 3.2.7 Personal Knowledge Base – “Second Brain with Memory”
 
 **Objective**  
@@ -391,8 +376,6 @@ Provide a long-term, searchable knowledge base that captures notes, research, an
 - AnythingLLM uses a RAG pipeline to query the knowledge base and combine retrieved documents with LLM reasoning.
 
 > **User Story:** Parent asks, “What did we try last year for teaching fractions that didn’t work?” SAIC surfaces notes documenting previous approaches, their outcomes, and reflections on effectiveness.
-
----
 
 #### 3.2.8 Family Publishing Platform (Static Sites, Blogs, Portfolios)
 
@@ -414,8 +397,6 @@ Make it easy for each family member to publish and own their work long-term.
 
 > **User Story:** Child B writes an essay on climate change. They use SAIC to improve clarity and structure, commit the final version, and see it appear on `http://m7-1.tailnet.ts.net/family/child-b`.
 
----
-
 #### 3.2.9 Safe Experimental Sandboxes (For All Ages)
 
 **Objective**  
@@ -434,8 +415,6 @@ Enable “break it and rebuild it” learning in programming and data science wi
 - No cloud provider credentials or tokens are available in sandbox environments.
 
 > **User Story:** Child A writes a Python script that accidentally creates an infinite loop. JupyterLab kernel hangs, but a restart clears it. No data is lost, no costs are incurred, and nothing breaks outside the notebook.
-
----
 
 #### 3.2.10 Cross-Generational Learning & Mentorship
 
@@ -456,8 +435,6 @@ Support learning as a shared, family-wide endeavor rather than separate activiti
 
 > **User Story:** Parent learns a new programming language. Child B watches, helps debug, and sees that adults also struggle and learn. They co-author a blog post about the experience, each writing different sections.
 
----
-
 #### 3.2.11 Long-Term Skill Portfolios (Proof, Not Credentials)
 
 **Objective**  
@@ -477,8 +454,6 @@ Accumulate authentic evidence of growth over years for both kids and adults.
 
 > **User Story:** At age 18, Child B has a portfolio with four years of essays, code projects, robotics logs, and reflection journals. This portfolio is used for college applications or job interviews, showing real progression instead of only grades.
 
----
-
 #### 3.2.12 AI as a Background Utility (Not Just an App)
 
 **Objective**  
@@ -497,8 +472,6 @@ Shift AI from being a novelty chat interface to invisible infrastructure that qu
 - Outputs are written to well-defined locations in the data zone.
 
 > **User Story:** Each night, SAIC summarizes the day’s journals, tags new documents, prepares three visual versions of tomorrow’s math lesson, and emails parents a short status report, all without manual prompting.
-
----
 
 ### 3.3 Adult Productivity & Household Features
 
@@ -523,8 +496,6 @@ Provide a private, reliable build and test environment for software and content 
 
 > **User Story:** A parent developing a client website commits code to GitHub. M7 #2 triggers a build, K6 runs tests in Docker, and M7 #1 hosts a staging version accessible on the tailnet.
 
----
-
 #### 3.3.2 Cost & Sovereignty Benefits
 
 **Objective**  
@@ -543,8 +514,6 @@ Replace SaaS sprawl and unpredictable AI costs with a transparent, electricity-b
 - Logs and dashboards help the family understand where compute is being used.
 
 > **User Story:** Over a year, the family calculates that previous SaaS usage for AI and content tools averaged $120/month. With SAIC, monthly electricity costs rise by about $60, but no substantive SaaS subscriptions are required. Net savings exceed $700/year with full data sovereignty retained.
-
----
 
 ### 3.4 What This System Quietly Becomes
 
@@ -565,8 +534,6 @@ Over time, SAIC becomes:
 **Long-Term Vision**
 
 > After 5+ years, SAIC becomes the family’s intellectual backbone. Portfolio evidence replaces grades as the primary signal of ability. Adults may have launched businesses using SAIC infrastructure. Kids grow up treating AI as a powerful but bounded tool they understand and control.
-
----
 
 ## 4. Functional Requirements Validation
 
@@ -611,8 +578,6 @@ This section validates that SAIC v1.5.3 satisfies the functional specifications.
 - **Non-goal**: SAIC does not attempt to replace all external services (e.g., specialized cloud-only models). Instead, it provides a robust local baseline with clear cloud overflow.
 
 Currently, there are **no unmet functional requirements** from the specification list. All 20 items are addressed with concrete services.
-
----
 
 ## 5. Hardware Architecture
 
@@ -688,8 +653,6 @@ The hardware design separates concerns across:
 | Raspberry Pi 5 #2–3 | Home Automation / IoT Monitoring    | 16GB LPDDR4X each                                  |
 | Synology DS423      | Storage and Backups                 | 4×6TB HDD, SHR + Btrfs, ~24TB usable               |
 
----
-
 ### 5.3 Orchestration Layer (Mac mini M4 Pro)
 
 ```yaml
@@ -716,8 +679,6 @@ Mac mini M4 Pro:
 
 This node provides a single logical “front door” for all AI requests and handles routing to text vs visual backends and cloud overflow.
 
----
-
 ### 5.4 Text Inference Layer (Mac Studio M3 Ultra + DGX Spark)
 
 ```yaml
@@ -742,8 +703,6 @@ Mac Studio M3 Ultra:
 
 DGX Spark nodes can be used to offload batch or long-running inference and fine-tuning jobs, especially when multiple users are active.
 
----
-
 ### 5.5 Visual AI Hub (RTX 4090 Workstation)
 
 ```yaml
@@ -758,8 +717,6 @@ RTX 4090 Workstation:
 ```
 
 Detailed configuration for this node appears in Section 8.
-
----
 
 ### 5.6 Unified Knowledge \& Safety Layer (AI Max+ 395)
 
@@ -787,9 +744,6 @@ GMKtec AI Max+ 395:
     - Embedding models (nomic-embed-text or similar)
 ```
 
-
----
-
 ### 5.7 Development \& Staging (GMKtec K6)
 
 ```yaml
@@ -809,9 +763,6 @@ GMKtec K6:
     - CI/CD runner for Linux jobs           # ~4GB
     - System overhead                        # ~4GB
 ```
-
-
----
 
 ### 5.8 Windows Support Nodes (M7 \#1 and M7 \#2)
 
@@ -842,9 +793,6 @@ GMKtec M7 #2 (Windows 11 Pro):
     - Artifact storage
 ```
 
-
----
-
 ### 5.9 OpenClaw and Edge Devices (Raspberry Pi 5)
 
 ```yaml
@@ -860,8 +808,6 @@ Raspberry Pi 5 #1:
 ```
 
 Additional Raspberry Pi devices handle home automation and IoT monitoring.
-
----
 
 ### 5.10 Storage Layer (Synology DS423 NAS)
 
@@ -1007,8 +953,6 @@ class IntelligentRequestRouter:
 
 Users typically interact only with AnythingLLM and possibly dashboards; other tools are for administrators.
 
----
-
 ## 7. Inference Architecture
 
 Inference is split into specialized domains:
@@ -1063,8 +1007,6 @@ DGX Spark nodes run more intensive or long-running tasks:
 - Fine-tuning tasks (via Axolotl or similar frameworks).
 
 These are typically orchestrated by n8n or manual scripts and scheduled during off-peak hours.
-
----
 
 ## 8. Visual AI Hub (RTX 4090)
 
@@ -1268,8 +1210,6 @@ Fine-tune SDXL on a small curated dataset of family photos or artwork to:
 3. Save LoRA weights to `/volume1/models/lora/family-style-v1`.
 4. Configure ComfyUI to use the new LoRA in specific workflows.
 
----
-
 ### 8.7 Sample Multi-Modal Learning Workflow
 
 **Example: Generate a complete lesson asset set for “Water Cycle”**
@@ -1281,8 +1221,6 @@ Fine-tune SDXL on a small curated dataset of family photos or artwork to:
     - Coqui TTS: Generate spoken explanation.
 3. n8n combines outputs into a single lesson package under `/volume1/generated/lessons/water-cycle/`.
 4. SAIC adds links from the learning portal and optionally a blog entry or portfolio page.
-
----
 
 ## 9. OpenClaw Personal AI Assistant
 
@@ -1315,8 +1253,6 @@ OpenClaw is a separate, proactive assistant running on its own hardware for isol
 - No direct mount of `/volume1` from the NAS; only proxied HTTP APIs.
 - Separate identity in Tailscale ACLs.
 - Can be shut down entirely without affecting SAIC core.
-
----
 
 ## 10. Unified Knowledge Layer
 
@@ -1575,8 +1511,6 @@ if __name__ == "__main__":
 - Whitelisting which users and tasks can trigger cloud calls.
 - Logging every overflow event with rationale.
 
----
-
 ## 13. Containerization Strategy
 
 SAIC relies heavily on containers for portability and isolation.
@@ -1600,8 +1534,6 @@ SAIC relies heavily on containers for portability and isolation.
 - `docker-compose` or `docker stack deploy` used per node.
 - Each machine has its own compose file referencing the NAS-mounted volumes.
 - Configuration kept in Git so infra changes are trackable.
-
----
 
 ## 14. Source Code Management
 
@@ -1628,8 +1560,6 @@ Example layout:
 - `main` branch: Production-ready configuration.
 - `dev` branch: Experimental changes.
 - Staging and production differences handled via env files or compose overrides.
-
----
 
 ## 15. Observability Stack
 
@@ -1675,8 +1605,6 @@ Dashboards:
 - **Visual AI Metrics**: GPU utilization, images per minute, generation latency.
 - **Cost Approximation**: Power usage estimates based on uptime and TDP.
 
----
-
 ## 16. Security and Hardening
 
 ### 16.1 Network Security
@@ -1721,7 +1649,6 @@ Example ACL:
 }
 ```
 
-
 ### 16.2 OS Hardening
 
 - Keep OSes updated; automate security patches where possible.
@@ -1734,8 +1661,6 @@ Example ACL:
 - Use API keys or tokens for internal services when appropriate.
 - Rate-limit potentially heavy endpoints (e.g., image generation) per user.
 - Log administrative actions.
-
----
 
 ## 17. Multi-Tenancy and Governance
 
@@ -1782,8 +1707,6 @@ This configuration is read by orchestrator services to enforce policies.
 - Certain models (e.g., experimental or very powerful ones) may be restricted to adults.
 - Image generation quotas prevent accidental runaway usage.
 
----
-
 ## 18. Performance Optimization
 
 ### 18.1 Tiered Routing
@@ -1804,8 +1727,6 @@ This configuration is read by orchestrator services to enforce policies.
 
 - Run fine-tuning and big batch jobs at off-peak times (e.g., overnight).
 - n8n orchestrates these jobs using cron-like triggers.
-
----
 
 ## 19. Backup and Disaster Recovery
 
@@ -1849,8 +1770,6 @@ On Synology:
 - **NAS failure**: Replace NAS hardware, restore from B2 backups, reattach to SAIC nodes.  
 - **Total site failure**: Use B2 backups and spare hardware (or cloud VMs) to rebuild essentials temporarily.
 
----
-
 ## 20. Fine-Tuning Infrastructure
 
 Fine-tuning allows SAIC to adapt models to the family’s unique data and preferences.
@@ -1881,8 +1800,6 @@ Typical flow:
 
 - Fine-tuning jobs should be initiated only by adult users.  
 - Training sets must be explicitly selected to avoid accidentally exposing sensitive content to training pipelines.
-
----
 
 ## 21. Multi-Modal Capabilities
 
@@ -1994,5 +1911,3 @@ Examples:
 - **v1.5.1 (February 2026)** – Added full functional specifications section and traceability.  
 - **v1.5.2 (February 2026)** – Introduced RTX 4090 Visual AI Hub, dual-specialization architecture.  
 - **v1.5.3 (February 2026)** – Fully consolidated standalone markdown; all sections, specs, validation, and RTX 4090 role integrated in one self-contained document.
-
----
