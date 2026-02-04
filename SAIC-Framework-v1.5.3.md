@@ -49,7 +49,9 @@ Artificial intelligence has become essential infrastructure for knowledge work, 
 
 ### 1.2 The SAIC Solution
 
-The Sovereign AI Cloud (SAIC) is a framework for individuals and families to establish **local-first AI infrastructure with intelligent cloud overflow** that serves simultaneously as:
+The Sovereign AI Cloud (SAIC) is a framework for individuals and families to establish **local-first AI infrastructure with intelligent cloud overflow**. 
+
+It represents a **Full-Stack Local** architecture that repatriates both the **Data Plane** (inference, storage) to ensure privacy and the **Control Plane** (policies, routing, identity) to ensure autonomy. It serves simultaneously as:
 
 - A private learning cloud for adaptive, mastery-based education.  
 - A creative studio for multi-modal content generation (text, image, video, audio).  

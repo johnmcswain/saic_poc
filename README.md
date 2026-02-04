@@ -13,6 +13,7 @@ February 2026
 ### Key Principles
 
 - **Local-First Inference**: 95%+ of workloads (text, image, audio) run on local hardware (Mac Studio, RTX 4090).
+- **Full-Stack Sovereignty**: Repatriates both the **Data Plane** (execution) and **Control Plane** (governance) to local infrastructure.
 - **Intelligent Cloud Overflow**: Seamlessly routes requests to cloud providers (Google Gemini, NVIDIA Brev) only when local capacity is exceeded.
 - **Data Sovereignty**: Your data (journals, photos, code) never leaves your network unless you explicitly allow it.
 - **Family Learning Cloud**: Adaptive learning paths, Socratic tutoring, and safe sandboxes for kids.
