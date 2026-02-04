@@ -26,8 +26,8 @@ February 2026
 | File | Description |
 |------|-------------|
 | `SAIC-Framework-v1.5.3.md` | The complete technical specification, architecture, and user guide. |
-| `SAIC-flow-animation-v1.5.3.html` | Interactive web visualization of token flow through the system. |
-| `SAIC-Architecture_v1.5.3.drawio` | Detailed visual architecture diagram (draw.io format). |
+| `saic-flow-animation-v1.5.3.html` | Interactive web visualization of token flow through the system. |
+| `SAIC_Architecture_v1.5.3.drawio` | Detailed visual architecture diagram (draw.io format). |
 
 ---
 
@@ -72,8 +72,8 @@ SAIC uses a **Three-Zone Model** across two isolated networks to ensure security
 ## Quick Start
 
 1.  **Read the Specifications**: Start with `SAIC-Framework-v1.5.3.md` to understand the full capabilities and "User Stories".
-2.  **View the Diagram**: Open `SAIC-Architecture_v1.5.3.drawio` to see the physical and logical topology.
-3.  **Trace the Flow**: Open `SAIC-flow-animation-v1.5.3.html` in a browser to visualize how a request (e.g., "Explain Photosynthesis") routes through the zones.
+2.  **View the Diagram**: Open `SAIC_Architecture_v1.5.3.drawio` to see the physical and logical topology.
+3.  **Trace the Flow**: Open `saic-flow-animation-v1.5.3.html` in a browser to visualize how a request (e.g., "Explain Photosynthesis") routes through the zones.
 
 ---
 
