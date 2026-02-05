@@ -4,7 +4,6 @@
 
 February 2026
 
----
 
 ## Overview
 
@@ -20,7 +19,6 @@ February 2026
 - **Visual AI Hub**: Dedicated RTX 4090 node for high-speed image and video generation.
 - **Dual-Network Isolation**: Strict separation between "Personal Devices" and "AI Operations" via separate Tailscale networks.
 
----
 
 ## Repository Contents
 
@@ -29,8 +27,36 @@ February 2026
 | `SAIC-Framework-v1.5.3.md` | The complete technical specification, architecture, and user guide. |
 | `saic-flow-animation-v1.5.3.html` | Interactive web visualization of token flow through the system. |
 | `SAIC_Architecture_v1.5.3.drawio` | Detailed visual architecture diagram (draw.io format). |
+| `3D/` | Folder containing the interactive 3D architectural map. |
 
----
+## Interactive 3D Map
+
+Located in the `3D/` folder, this interactive visualization features:
+
+**Structure:**
+- **Three stacked zone layers** (translucent platforms with glowing edge rings):
+  - **Layer 0 (bottom)**: Data Zone (amber) — Synology NAS
+  - **Layer 1 (mid)**: AI Services Zone (red/pink) — Mac Studio, RTX 4090, AI Max+ 395, DGX Spark
+  - **Layer 2 (top)**: Personal Devices Zone (green) — iPad, Laptop, Phone
+- **Central pillar**: Mac mini M4 Pro (Orchestrator) bridging all layers
+- **14 hardware nodes**: Labeled 3D boxes, color-coded by zone
+- **Support nodes (purple)**: K6, M7 #1, M7 #2, Raspberry Pi 5
+
+**Visuals:**
+- **Data flow lines**: Curved Bezier connections showing:
+  - Personal devices -> Orchestrator (dashed green)
+  - Orchestrator -> AI backends (solid blue)
+  - AI services -> NAS (dashed amber)
+  - Support nodes -> NAS (dashed purple)
+- **Tailnet labels**: Showing the two isolated network boundaries
+- **Ambient particles**: Subtle floating particles for atmosphere
+- **Hover effects**: Nodes glow on hover
+
+**Interactivity:**
+- **Orbit**: Left-click + drag
+- **Zoom**: Scroll wheel
+- **Pan**: Right-click + drag
+- **Details**: Click any node to open a detail panel with specs, services, power, and role description (pulled from SAIC v1.5.3).
 
 ## Architecture Summary
 
@@ -52,8 +78,6 @@ SAIC uses a **Three-Zone Model** across two isolated networks to ensure security
 - **Synology DS423**: Central storage for models, backups, portfolios, and journals.
 - **Resilience**: 3-2-1 backup strategy with offsite encryption.
 
----
-
 ## Hardware Inventory (v1.5.3)
 
 | Device | Role | Key Specs |
@@ -68,15 +92,11 @@ SAIC uses a **Three-Zone Model** across two isolated networks to ensure security
 | **Raspberry Pi 5** | OpenClaw Assistant | 16GB RAM (Isolated) |
 | **Synology DS423** | Storage Layer | 24TB Usable (SHR) |
 
----
-
 ## Quick Start
 
 1.  **Read the Specifications**: Start with `SAIC-Framework-v1.5.3.md` to understand the full capabilities and "User Stories".
 2.  **View the Diagram**: Open `SAIC_Architecture_v1.5.3.drawio` to see the physical and logical topology.
 3.  **Trace the Flow**: Open `saic-flow-animation-v1.5.3.html` in a browser to visualize how a request (e.g., "Explain Photosynthesis") routes through the zones.
-
----
 
 ## Version History
 
@@ -86,6 +106,4 @@ SAIC uses a **Three-Zone Model** across two isolated networks to ensure security
 - **v1.5.2**: Added RTX 4090 Visual AI Hub.
 - **v1.5.3 (Current)**: Renamed to **Sovereign AI Cloud (SAIC)**. Fully consolidated documentation. Explicit Dual-Tailnet architecture.
 
----
-
-*"If I build the tools, I have only myself to blame for the exposure and consequences of my and my family's use."*
+> *"If I build the tools, I have only myself to blame for the exposure and consequences of my and my family's use."*

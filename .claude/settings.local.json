@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -Command \"\\(Get-Item ''C:\\\\Users\\\\Dell AI User\\\\Desktop\\\\workspace\\\\saic_poc\\\\3D\\\\index.html''\\).Length\")"
+    ]
+  }
+}

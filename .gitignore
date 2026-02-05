@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# OS specific
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor directories
+.idea/
+.vscode/
+
+# Build outputs
+dist/
+build/

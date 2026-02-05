@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAIC v1.5.3 - 3D Architecture Explorer</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { overflow: hidden; background: #0a0a1a; font-family: 'Segoe UI', system-ui, sans-serif; }
+    #canvas { display: block; }
+
+    #info-panel {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 340px;
+      background: rgba(10, 10, 30, 0.92);
+      border: 1px solid rgba(100, 140, 255, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      color: #c8d6f0;
+      font-size: 13px;
+      line-height: 1.6;
+      backdrop-filter: blur(12px);
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    #info-panel h2 { color: #7aa2f7; font-size: 16px; margin-bottom: 8px; }
+    #info-panel h3 { color: #9ece6a; font-size: 13px; margin-top: 10px; margin-bottom: 4px; }
+    #info-panel .spec { color: #888ea8; }
+    #info-panel .role-tag {
+      display: inline-block;
+      background: rgba(122, 162, 247, 0.15);
+      border: 1px solid rgba(122, 162, 247, 0.3);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 11px;
+      color: #7aa2f7;
+      margin-top: 4px;
+    }
+
+    #hud {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      color: #5a6488;
+      font-size: 12px;
+      line-height: 1.8;
+      pointer-events: none;
+    }
+    #hud .title { color: #7aa2f7; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    #hud .version { color: #444a64; font-size: 11px; }
+
+    #legend {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      color: #5a6488;
+      font-size: 11px;
+      line-height: 2;
+      pointer-events: none;
+    }
+    #legend .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    #controls-hint {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      color: #3a3f58;
+      font-size: 11px;
+      text-align: right;
+      line-height: 1.8;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+
+  <div id="hud">
+    <div class="title">Sovereign AI Cloud</div>
+    <div class="version">v1.5.3 &mdash; 3D Architecture Explorer</div>
+    <br>
+    Three-Zone Model<br>
+    Two Isolated Tailnets<br>
+    10 Hardware Nodes
+  </div>
+
+  <div id="info-panel" style="opacity:0;">
+    <h2 id="info-name">Select a node</h2>
+    <div id="info-body"></div>
+  </div>
+
+  <div id="legend">
+    <span class="dot" style="background:#7aa2f7;"></span> Orchestration Layer<br>
+    <span class="dot" style="background:#f7768e;"></span> AI Services Zone<br>
+    <span class="dot" style="background:#9ece6a;"></span> Personal Devices Zone<br>
+    <span class="dot" style="background:#e0af68;"></span> Data Zone<br>
+    <span class="dot" style="background:#bb9af7;"></span> Support Nodes
+  </div>
+
+  <div id="controls-hint">
+    Left-click + drag &mdash; Orbit<br>
+    Scroll &mdash; Zoom<br>
+    Right-click + drag &mdash; Pan<br>
+    Click node &mdash; Inspect
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+    import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
+    // ── Scene setup ──────────────────────────────────────────
+    const canvas = document.getElementById('canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x0a0a1a, 0.012);
+
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 200);
+    camera.position.set(22, 18, 28);
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.06;
+    controls.target.set(0, 5, 0);
+    controls.minDistance = 8;
+    controls.maxDistance = 60;
+    controls.maxPolarAngle = Math.PI * 0.48;
+
+    // ── Lighting ─────────────────────────────────────────────
+    const ambient = new THREE.AmbientLight(0x2a2a4a, 0.8);
+    scene.add(ambient);
+
+    const dirLight = new THREE.DirectionalLight(0x7aa2f7, 0.6);
+    dirLight.position.set(15, 25, 10);
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.set(2048, 2048);
+    scene.add(dirLight);
+
+    const pointLight1 = new THREE.PointLight(0xf7768e, 0.4, 50);
+    pointLight1.position.set(-10, 12, -5);
+    scene.add(pointLight1);
+
+    const pointLight2 = new THREE.PointLight(0x9ece6a, 0.3, 50);
+    pointLight2.position.set(10, 16, 8);
+    scene.add(pointLight2);
+
+    // ── Colors ───────────────────────────────────────────────
+    const COLORS = {
+      orchestrator: 0x7aa2f7,
+      aiServices:   0xf7768e,
+      personal:     0x9ece6a,
+      data:         0xe0af68,
+      support:      0xbb9af7,
+      flow:         0x3d59a1,
+      grid:         0x1a1b2e,
+    };
+
+    // ── Ground grid ──────────────────────────────────────────
+    const gridHelper = new THREE.GridHelper(60, 60, 0x1a1b2e, 0x12132a);
+    gridHelper.position.y = -0.01;
+    scene.add(gridHelper);
+
+    // ground plane for shadow receiving
+    const groundGeo = new THREE.PlaneGeometry(60, 60);
+    const groundMat = new THREE.MeshStandardMaterial({ color: 0x0a0a1a, roughness: 1 });
+    const ground = new THREE.Mesh(groundGeo, groundMat);
+    ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    // ── Node data (from SAIC v1.5.3) ────────────────────────
+    const nodeData = {
+      // Orchestration Layer (center pillar)
+      'mac-mini': {
+        label: 'Mac mini M4 Pro',
+        zone: 'orchestrator',
+        position: [0, 2.5, 0],
+        size: [2.2, 1.4, 2.2],
+        info: {
+          role: 'Orchestration & Routing',
+          specs: 'M4 Pro 14-core, 48GB unified, 1TB SSD',
+          power: '~50W',
+          services: ['LangFlow', 'AnythingLLM', 'n8n', 'Prometheus', 'Grafana', 'Traefik', 'Request Router'],
+          description: 'Single front door for all AI requests. Bridges Family Tailnet and AI Ops Tailnet. Routes text, visual, and audio requests to appropriate backends.',
+        },
+      },
+
+      // AI Services Zone (Layer 1 - mid ring)
+      'mac-studio': {
+        label: 'Mac Studio M3 Ultra',
+        zone: 'aiServices',
+        position: [-7, 5.5, -2],
+        size: [2.4, 1.6, 2.4],
+        info: {
+          role: 'Primary Text LLM Inference',
+          specs: '256GB unified RAM, M3 Ultra 32-core CPU / 80-core GPU, 4TB SSD',
+          power: '~150W',
+          services: ['Ollama', 'Llama 3.2 70B', 'Qwen 2.5 72B', 'DeepSeek v3 236B', 'Mistral Small 22B'],
+          description: 'Primary text inference engine. Handles Socratic tutoring, Explain-It-Three-Ways, general chat, and RAG-based reasoning.',
+        },
+      },
+      'rtx-4090': {
+        label: 'RTX 4090 Workstation',
+        zone: 'aiServices',
+        position: [7, 5.5, -2],
+        size: [2.6, 2.0, 2.0],
+        info: {
+          role: 'Visual AI Hub',
+          specs: 'RTX 4090 24GB VRAM, 16384 CUDA cores, 64GB DDR5, 2TB NVMe',
+          power: '~600W',
+          services: ['ComfyUI / SDXL', 'Stable Video Diffusion', 'Coqui TTS', 'FFmpeg NVENC', 'LoRA Fine-Tuning'],
+          description: 'All image generation, video generation, voice synthesis, and video transcoding. Dedicated GPU workstation.',
+        },
+      },
+      'ai-max': {
+        label: 'AI Max+ 395',
+        zone: 'aiServices',
+        position: [0, 5.5, -7],
+        size: [2.2, 1.4, 2.2],
+        info: {
+          role: 'Knowledge, Safety & Embeddings',
+          specs: 'Ryzen AI 9 395, 128GB LPDDR5X, 40+ TOPS NPU, 2TB NVMe',
+          power: '~75W',
+          services: ['Qdrant (4 collections)', 'Redis (semantic cache)', 'Nemotron-4 safety', 'Whisper Large v3', 'Embedding models'],
+          description: 'Unified Knowledge Layer. Hosts vector DB for learning content, progress tracking, journals, and Obsidian vault indexing.',
+        },
+      },
+      'dgx-spark': {
+        label: 'DGX Spark Nodes',
+        zone: 'aiServices',
+        position: [-4, 5.5, -6],
+        size: [2.0, 1.2, 2.0],
+        info: {
+          role: 'Batch Inference & Fine-Tuning',
+          specs: '128GB LPDDR5x, 4TB NVMe each',
+          power: 'Variable',
+          services: ['Batch summarization', 'Long transcription', 'Axolotl / PEFT fine-tuning'],
+          description: 'Offloads long-running or batch inference and fine-tuning jobs from the Mac Studio, scheduled during off-peak hours.',
+        },
+      },
+
+      // Personal Devices Zone (Layer 2 - top)
+      'ipad': {
+        label: 'iPad / Tablet',
+        zone: 'personal',
+        position: [-5, 12, 5],
+        size: [1.6, 0.2, 1.2],
+        info: {
+          role: 'Family Learning Device',
+          specs: 'Consumer tablet, browser + Tailscale',
+          power: 'N/A',
+          services: ['AnythingLLM (web)', 'Dashboards', 'Portfolios'],
+          description: 'Children and parents access AI tutoring, projects, and dashboards through the browser. No direct access to AI service ports.',
+        },
+      },
+      'laptop': {
+        label: 'Family Laptop',
+        zone: 'personal',
+        position: [0, 12, 6],
+        size: [1.8, 0.3, 1.2],
+        info: {
+          role: 'Primary Family Computer',
+          specs: 'Standard laptop, browser + Tailscale',
+          power: 'N/A',
+          services: ['AnythingLLM (web)', 'Dashboards', 'SMB File Access to NAS', 'Portfolios'],
+          description: 'Main family workstation. Can view dashboards and files. Parents can access admin tools. No direct SSH to GPU nodes.',
+        },
+      },
+      'phone': {
+        label: 'Smartphones',
+        zone: 'personal',
+        position: [5, 12, 5],
+        size: [0.8, 1.4, 0.4],
+        info: {
+          role: 'Mobile Access',
+          specs: 'iOS/Android, Tailscale app',
+          power: 'N/A',
+          services: ['AnythingLLM (mobile web)', 'OpenClaw chat'],
+          description: 'Quick mobile access to AI chat and assistant features over Tailscale VPN.',
+        },
+      },
+
+      // Data Zone (Layer 0 - bottom ring)
+      'nas': {
+        label: 'Synology DS423',
+        zone: 'data',
+        position: [6, 1.2, 5],
+        size: [2.0, 2.4, 1.6],
+        info: {
+          role: 'Primary Storage & Backups',
+          specs: '4x6TB IronWolf Pro, SHR + Btrfs, ~24TB usable',
+          power: '~45W',
+          services: ['12 named volumes', 'Btrfs snapshots', 'B2 offsite backup', '3-2-1 strategy'],
+          description: 'Central data repository. Stores models, vectors, Docker images, Git repos, portfolios, journals, generated content, and all family data.',
+        },
+      },
+
+      // Support Nodes
+      'k6': {
+        label: 'GMKtec K6',
+        zone: 'support',
+        position: [8, 3, 2],
+        size: [1.4, 0.8, 1.4],
+        info: {
+          role: 'Dev, Staging & JupyterLab',
+          specs: 'Ryzen 7 7840HS, 64GB DDR5, 1TB SSD',
+          power: '~45W',
+          services: ['JupyterLab', 'Staging LangFlow/n8n/AnythingLLM', 'Edge Ollama (14B-22B)', 'CI runner (Linux)'],
+          description: 'Safe sandbox for coding and data science. Also runs staging copies of orchestration services for testing.',
+        },
+      },
+      'm7-1': {
+        label: 'GMKtec M7 #1',
+        zone: 'support',
+        position: [-8, 3, 3],
+        size: [1.2, 0.6, 1.2],
+        info: {
+          role: 'Web Hosting & Publishing',
+          specs: '16GB RAM, Windows 11 Pro',
+          power: '~25-30W',
+          services: ['IIS 10 (Jekyll sites)', 'Jekyll build pipeline (WSL2)', 'Vaultwarden', 'Print server'],
+          description: 'Hosts family portfolios and static sites. Builds Jekyll projects on commit and serves them on the tailnet.',
+        },
+      },
+      'm7-2': {
+        label: 'GMKtec M7 #2',
+        zone: 'support',
+        position: [-8, 3, -3],
+        size: [1.2, 0.6, 1.2],
+        info: {
+          role: 'CI/CD & Dev Tools',
+          specs: '16GB RAM, Windows 11 Pro',
+          power: '~25-30W',
+          services: ['Jenkins / GitLab Runner', 'VS Code Server', 'Node.js / Python', 'Docker Desktop'],
+          description: 'Runs build and test pipelines. Triggers on Git commits, runs tests in Docker, deploys staging artifacts.',
+        },
+      },
+      'rpi': {
+        label: 'Raspberry Pi 5',
+        zone: 'support',
+        position: [4, 3, -6],
+        size: [1.0, 0.5, 1.0],
+        info: {
+          role: 'OpenClaw Assistant',
+          specs: '16GB LPDDR4X',
+          power: '10-15W',
+          services: ['OpenClaw', 'Ollama (qwen2.5:7b)', 'PostgreSQL/SQLite'],
+          description: 'Isolated proactive household assistant. Email triage, calendar, reminders. No direct NAS mount, only proxied APIs.',
+        },
+      },
+    };
+
+    // ── Zone platform geometry ───────────────────────────────
+    function createZonePlatform(y, radius, color, label, segments = 64) {
+      const group = new THREE.Group();
+
+      // Disc platform
+      const geo = new THREE.CylinderGeometry(radius, radius, 0.15, segments);
+      const mat = new THREE.MeshStandardMaterial({
+        color,
+        transparent: true,
+        opacity: 0.08,
+        roughness: 0.8,
+        metalness: 0.2,
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.y = y;
+      mesh.receiveShadow = true;
+      group.add(mesh);
+
+      // Edge ring
+      const ringGeo = new THREE.TorusGeometry(radius, 0.04, 8, segments);
+      const ringMat = new THREE.MeshStandardMaterial({
+        color,
+        transparent: true,
+        opacity: 0.25,
+        emissive: color,
+        emissiveIntensity: 0.3,
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.rotation.x = Math.PI / 2;
+      ring.position.y = y;
+      group.add(ring);
+
+      return group;
+    }
+
+    // Layer 0 - Data Zone
+    scene.add(createZonePlatform(0, 12, COLORS.data, 'Data Zone'));
+    // Layer 1 - AI Services Zone
+    scene.add(createZonePlatform(4.5, 11, COLORS.aiServices, 'AI Services Zone'));
+    // Layer 2 - Personal Devices Zone
+    scene.add(createZonePlatform(11, 9, COLORS.personal, 'Personal Devices Zone'));
+
+    // ── Node creation ────────────────────────────────────────
+    const clickableObjects = [];
+    const nodeLabels = [];
+    const nodeMeshMap = {};
+
+    function getNodeColor(zone) {
+      return COLORS[zone] || 0xffffff;
+    }
+
+    function createNode(id, data) {
+      const group = new THREE.Group();
+      const color = getNodeColor(data.zone);
+      const [w, h, d] = data.size;
+      const [x, y, z] = data.position;
+
+      // Main body
+      const geo = new THREE.BoxGeometry(w, h, d);
+      const mat = new THREE.MeshStandardMaterial({
+        color,
+        roughness: 0.4,
+        metalness: 0.6,
+        emissive: color,
+        emissiveIntensity: 0.1,
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      mesh.userData = { nodeId: id };
+      group.add(mesh);
+      clickableObjects.push(mesh);
+      nodeMeshMap[id] = mesh;
+
+      // Glow outline
+      const outlineGeo = new THREE.BoxGeometry(w + 0.1, h + 0.1, d + 0.1);
+      const outlineMat = new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.06,
+        side: THREE.BackSide,
+      });
+      group.add(new THREE.Mesh(outlineGeo, outlineMat));
+
+      // Top accent line
+      const accentGeo = new THREE.BoxGeometry(w, 0.04, d);
+      const accentMat = new THREE.MeshStandardMaterial({
+        color,
+        emissive: color,
+        emissiveIntensity: 0.8,
+      });
+      const accent = new THREE.Mesh(accentGeo, accentMat);
+      accent.position.y = h / 2 + 0.02;
+      group.add(accent);
+
+      // Sprite label
+      const spriteMat = makeTextSprite(data.label, color);
+      spriteMat.position.y = h / 2 + 0.6;
+      group.add(spriteMat);
+      nodeLabels.push(spriteMat);
+
+      group.position.set(x, y, z);
+      scene.add(group);
+    }
+
+    function makeTextSprite(text, color) {
+      const cvs = document.createElement('canvas');
+      const ctx = cvs.getContext('2d');
+      cvs.width = 512;
+      cvs.height = 80;
+
+      ctx.font = 'bold 32px Segoe UI, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      // text shadow
+      ctx.fillStyle = 'rgba(0,0,0,0.6)';
+      ctx.fillText(text, 257, 42);
+
+      // main text
+      const hex = '#' + new THREE.Color(color).getHexString();
+      ctx.fillStyle = hex;
+      ctx.fillText(text, 256, 40);
+
+      const tex = new THREE.CanvasTexture(cvs);
+      tex.minFilter = THREE.LinearFilter;
+      const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
+      const sprite = new THREE.Sprite(mat);
+      sprite.scale.set(4, 0.65, 1);
+      return sprite;
+    }
+
+    // Create all nodes
+    for (const [id, data] of Object.entries(nodeData)) {
+      createNode(id, data);
+    }
+
+    // ── Connection lines (data flows) ────────────────────────
+    function createFlow(fromId, toId, color, dashed = false) {
+      const fromPos = new THREE.Vector3(...nodeData[fromId].position);
+      const toPos = new THREE.Vector3(...nodeData[toId].position);
+
+      const midY = (fromPos.y + toPos.y) / 2 + 1.0;
+      const mid = new THREE.Vector3(
+        (fromPos.x + toPos.x) / 2,
+        midY,
+        (fromPos.z + toPos.z) / 2,
+      );
+
+      const curve = new THREE.QuadraticBezierCurve3(fromPos, mid, toPos);
+      const points = curve.getPoints(40);
+      const geo = new THREE.BufferGeometry().setFromPoints(points);
+
+      let mat;
+      if (dashed) {
+        mat = new THREE.LineDashedMaterial({
+          color,
+          transparent: true,
+          opacity: 0.3,
+          dashSize: 0.3,
+          gapSize: 0.2,
+        });
+      } else {
+        mat = new THREE.LineBasicMaterial({
+          color,
+          transparent: true,
+          opacity: 0.35,
+        });
+      }
+
+      const line = new THREE.Line(geo, mat);
+      if (dashed) line.computeLineDistances();
+      scene.add(line);
+      return line;
+    }
+
+    // Orchestrator <-> AI Services
+    createFlow('mac-mini', 'mac-studio', COLORS.orchestrator);
+    createFlow('mac-mini', 'rtx-4090', COLORS.orchestrator);
+    createFlow('mac-mini', 'ai-max', COLORS.orchestrator);
+
+    // Personal Devices -> Orchestrator
+    createFlow('ipad', 'mac-mini', COLORS.personal, true);
+    createFlow('laptop', 'mac-mini', COLORS.personal, true);
+    createFlow('phone', 'mac-mini', COLORS.personal, true);
+
+    // AI Services -> NAS (data flows)
+    createFlow('mac-studio', 'nas', COLORS.data, true);
+    createFlow('rtx-4090', 'nas', COLORS.data, true);
+    createFlow('ai-max', 'nas', COLORS.data, true);
+
+    // Support -> NAS
+    createFlow('k6', 'nas', COLORS.support, true);
+    createFlow('m7-1', 'nas', COLORS.support, true);
+    createFlow('m7-2', 'nas', COLORS.support, true);
+
+    // Laptop -> NAS (SMB)
+    createFlow('laptop', 'nas', COLORS.data, true);
+
+    // ── Central pillar (Orchestrator visual) ─────────────────
+    const pillarGeo = new THREE.CylinderGeometry(0.08, 0.08, 11, 8);
+    const pillarMat = new THREE.MeshStandardMaterial({
+      color: COLORS.orchestrator,
+      emissive: COLORS.orchestrator,
+      emissiveIntensity: 0.4,
+      transparent: true,
+      opacity: 0.3,
+    });
+    const pillar = new THREE.Mesh(pillarGeo, pillarMat);
+    pillar.position.set(0, 5.5, 0);
+    scene.add(pillar);
+
+    // ── Zone labels (large, positioned at edges) ─────────────
+    function createZoneLabel(text, y, color) {
+      const cvs = document.createElement('canvas');
+      const ctx = cvs.getContext('2d');
+      cvs.width = 1024;
+      cvs.height = 100;
+
+      ctx.font = '600 42px Segoe UI, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = 'rgba(0,0,0,0.4)';
+      ctx.fillText(text, 513, 52);
+      const hex = '#' + new THREE.Color(color).getHexString();
+      ctx.fillStyle = hex;
+      ctx.globalAlpha = 0.5;
+      ctx.fillText(text, 512, 50);
+
+      const tex = new THREE.CanvasTexture(cvs);
+      tex.minFilter = THREE.LinearFilter;
+      const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
+      const sprite = new THREE.Sprite(mat);
+      sprite.scale.set(12, 1.2, 1);
+      sprite.position.set(0, y, 13);
+      scene.add(sprite);
+    }
+
+    createZoneLabel('DATA ZONE', 0.5, COLORS.data);
+    createZoneLabel('AI SERVICES ZONE', 4.8, COLORS.aiServices);
+    createZoneLabel('PERSONAL DEVICES ZONE', 11.5, COLORS.personal);
+
+    // ── Tailnet labels ───────────────────────────────────────
+    function createSmallLabel(text, pos, color) {
+      const cvs = document.createElement('canvas');
+      const ctx = cvs.getContext('2d');
+      cvs.width = 512;
+      cvs.height = 64;
+
+      ctx.font = 'italic 26px Segoe UI, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const hex = '#' + new THREE.Color(color).getHexString();
+      ctx.fillStyle = hex;
+      ctx.globalAlpha = 0.35;
+      ctx.fillText(text, 256, 32);
+
+      const tex = new THREE.CanvasTexture(cvs);
+      tex.minFilter = THREE.LinearFilter;
+      const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
+      const sprite = new THREE.Sprite(mat);
+      sprite.scale.set(6, 0.8, 1);
+      sprite.position.set(...pos);
+      scene.add(sprite);
+    }
+
+    createSmallLabel('Family Tailnet', [-10, 11, -6], COLORS.personal);
+    createSmallLabel('AI Operations Tailnet', [-10, 4.8, -8], COLORS.aiServices);
+    createSmallLabel('Family Tailnet', [10, 0.5, 6], COLORS.data);
+
+    // ── Raycaster for click interaction ──────────────────────
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    let selectedNode = null;
+
+    const infoPanel = document.getElementById('info-panel');
+    const infoName = document.getElementById('info-name');
+    const infoBody = document.getElementById('info-body');
+
+    canvas.addEventListener('click', (e) => {
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(clickableObjects);
+
+      if (intersects.length > 0) {
+        const nodeId = intersects[0].object.userData.nodeId;
+        selectNode(nodeId);
+      } else {
+        deselectNode();
+      }
+    });
+
+    function selectNode(nodeId) {
+      // Reset previous selection
+      if (selectedNode && nodeMeshMap[selectedNode]) {
+        const prevMat = nodeMeshMap[selectedNode].material;
+        prevMat.emissiveIntensity = 0.1;
+      }
+
+      selectedNode = nodeId;
+      const data = nodeData[nodeId];
+      const mesh = nodeMeshMap[nodeId];
+      mesh.material.emissiveIntensity = 0.5;
+
+      infoName.textContent = data.label;
+      infoBody.innerHTML = `
+        <span class="role-tag">${data.info.role}</span>
+        <h3>Specs</h3>
+        <span class="spec">${data.info.specs}</span>
+        <h3>Power</h3>
+        <span class="spec">${data.info.power}</span>
+        <h3>Services</h3>
+        <span class="spec">${data.info.services.join(', ')}</span>
+        <h3>Description</h3>
+        ${data.info.description}
+      `;
+      infoPanel.style.opacity = '1';
+    }
+
+    function deselectNode() {
+      if (selectedNode && nodeMeshMap[selectedNode]) {
+        nodeMeshMap[selectedNode].material.emissiveIntensity = 0.1;
+      }
+      selectedNode = null;
+      infoPanel.style.opacity = '0';
+    }
+
+    // ── Hover effect ─────────────────────────────────────────
+    let hoveredNode = null;
+    canvas.addEventListener('mousemove', (e) => {
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(clickableObjects);
+
+      if (intersects.length > 0) {
+        const nodeId = intersects[0].object.userData.nodeId;
+        canvas.style.cursor = 'pointer';
+        if (hoveredNode !== nodeId && nodeId !== selectedNode) {
+          if (hoveredNode && hoveredNode !== selectedNode && nodeMeshMap[hoveredNode]) {
+            nodeMeshMap[hoveredNode].material.emissiveIntensity = 0.1;
+          }
+          nodeMeshMap[nodeId].material.emissiveIntensity = 0.3;
+          hoveredNode = nodeId;
+        }
+      } else {
+        canvas.style.cursor = 'default';
+        if (hoveredNode && hoveredNode !== selectedNode && nodeMeshMap[hoveredNode]) {
+          nodeMeshMap[hoveredNode].material.emissiveIntensity = 0.1;
+        }
+        hoveredNode = null;
+      }
+    });
+
+    // ── Particle field (ambient atmosphere) ──────────────────
+    const particleCount = 300;
+    const particleGeo = new THREE.BufferGeometry();
+    const particlePositions = new Float32Array(particleCount * 3);
+
+    for (let i = 0; i < particleCount; i++) {
+      particlePositions[i * 3] = (Math.random() - 0.5) * 40;
+      particlePositions[i * 3 + 1] = Math.random() * 16;
+      particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 40;
+    }
+
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+    const particleMat = new THREE.PointsMaterial({
+      color: 0x3d59a1,
+      size: 0.06,
+      transparent: true,
+      opacity: 0.4,
+    });
+    const particles = new THREE.Points(particleGeo, particleMat);
+    scene.add(particles);
+
+    // ── Animation loop ───────────────────────────────────────
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+
+      // Gentle particle drift
+      const pos = particles.geometry.attributes.position.array;
+      for (let i = 0; i < particleCount; i++) {
+        pos[i * 3 + 1] += Math.sin(t + i) * 0.001;
+        if (pos[i * 3 + 1] > 17) pos[i * 3 + 1] = 0;
+      }
+      particles.geometry.attributes.position.needsUpdate = true;
+
+      // Gentle pulse on orchestrator node
+      if (nodeMeshMap['mac-mini'] && selectedNode !== 'mac-mini' && hoveredNode !== 'mac-mini') {
+        nodeMeshMap['mac-mini'].material.emissiveIntensity = 0.1 + Math.sin(t * 2) * 0.05;
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // ── Resize handling ──────────────────────────────────────
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
